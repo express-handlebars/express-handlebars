@@ -1,10 +1,39 @@
 Express Handlebars Change History
 =================================
 
+4.0.0 (2020-03-25)
+------------------
+
+* Move to repo https://github.com/express-handlebars/express-handlebars/
+* Update all deps.
+
+3.1.0 (2019-05-14)
+------------------
+
+* `defaultLayout` defaults to main ([#249][])
+* Upgrade Handlebars to v4.1.2 ([#250][])
+
+[#249]: https://github.com/ericf/express-handlebars/issues/249
+[#250]: https://github.com/ericf/express-handlebars/issues/250
+
+3.0.2 (2019-02-24)
+------------------
+
+* Fix configuration `layoutsDir` & `partialsDir`. ([#244][])
+
+[#244]: https://github.com/ericf/express-handlebars/issues/244
+
+3.0.1 (2019-02-20)
+------------------
+
+* Updated dependencies that are long over due
+
 3.0.0 (2016-01-26)
 ------------------
 
 * Upgraded to Handlebars 4.0. ([#142][])
+
+[#142]: https://github.com/ericf/express-handlebars/issues/142
 
 2.0.1 (2015-04-23)
 ------------------
