@@ -1,8 +1,6 @@
 Express Handlebars
 ==================
 
-[![Join the chat at https://gitter.im/ericf/express-handlebars](https://badges.gitter.im/ericf/express-handlebars.svg)](https://gitter.im/ericf/express-handlebars?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 A [Handlebars][] view engine for [Express][] which doesn't suck.
 
 [![npm version][npm-badge]][npm]
@@ -15,8 +13,8 @@ A [Handlebars][] view engine for [Express][] which doesn't suck.
 [Handlebars]: https://github.com/wycats/handlebars.js
 [npm]: https://www.npmjs.org/package/express-handlebars
 [npm-badge]: https://img.shields.io/npm/v/express-handlebars.svg?style=flat-square
-[dep-status]: https://david-dm.org/ericf/express-handlebars
-[dep-badge]: https://img.shields.io/david/ericf/express-handlebars.svg?style=flat-square
+[dep-status]: https://david-dm.org/express-handlebars/express-handlebars
+[dep-badge]: https://img.shields.io/david/express-handlebars/express-handlebars.svg?style=flat-square
 [jneen-exphbs]: https://github.com/jneen/express-handlebars
 
 
@@ -289,7 +287,7 @@ The following is the list of metadata that's accessible on the `{{@exphbs}}` dat
 * `partials`: Collection of partials used when rendering the template.
 
 
-[examples directory]: https://github.com/ericf/express-handlebars/tree/master/examples
+[examples directory]: https://github.com/express-handlebars/express-handlebars/tree/master/examples
 [view cache setting]: http://expressjs.com/api.html#app-settings
 [Express locals]: http://expressjs.com/api.html#app.locals
 [registered with Handlebars]: https://github.com/wycats/handlebars.js/#registering-helpers
@@ -559,8 +557,8 @@ This example is more comprehensive and shows how to use many of the features of 
 As noted in the **Package Design** section, this view engine's implementation is instance-based, and more advanced usages can take advantage of this. The Advanced Usage example demonstrates how to use an `ExpressHandlebars` instance to share templates with the client, among other features.
 
 
-[Basic Usage]: https://github.com/ericf/express-handlebars/tree/master/examples/basic
-[Advanced Usage]: https://github.com/ericf/express-handlebars/tree/master/examples/advanced
+[Basic Usage]: https://github.com/express-handlebars/express-handlebars/tree/master/examples/basic
+[Advanced Usage]: https://github.com/express-handlebars/express-handlebars/tree/master/examples/advanced
 
 
 License
@@ -569,4 +567,4 @@ License
 This software is free to use under the Yahoo! Inc. BSD license. See the [LICENSE file][] for license text and copyright information.
 
 
-[LICENSE file]: https://github.com/ericf/express-handlebars/blob/master/LICENSE
+[LICENSE file]: https://github.com/express-handlebars/express-handlebars/blob/master/LICENSE
