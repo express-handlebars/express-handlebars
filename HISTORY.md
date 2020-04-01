@@ -1,6 +1,11 @@
 Express Handlebars Change History
 =================================
 
+4.0.1 (2020-04-01)
+------------------
+
+* Update handlebars to fix mimist vulnerability.
+
 4.0.0 (2020-03-25)
 ------------------
 
