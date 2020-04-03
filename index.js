@@ -4,20 +4,20 @@
  * See the accompanying LICENSE file for terms.
  */
 
-'use strict';
+"use strict";
 
-var ExpressHandlebars = require('./lib/express-handlebars');
+var ExpressHandlebars = require("./lib/express-handlebars");
 
-exports = module.exports  = exphbs;
-exports.create            = create;
+exports = module.exports = exphbs;
+exports.create = create;
 exports.ExpressHandlebars = ExpressHandlebars;
 
 // -----------------------------------------------------------------------------
 
-function exphbs(config) {
-    return create(config).engine;
+function exphbs (config) {
+	return create(config).engine;
 }
 
-function create(config) {
-    return new ExpressHandlebars(config);
+function create (config) {
+	return new ExpressHandlebars(config);
 }
