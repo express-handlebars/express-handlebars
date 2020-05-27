@@ -339,7 +339,7 @@ app.set('view engine', '.hbs');
 Default layouts directory is relative to `express settings.view` + `layouts/`
 The string path to the directory where the layout templates reside.
 
-**Note:** If you configure Express to look for views in a custom location (e.g., `app.set('views', 'some/path/')`), and if your `partialsDir` is not relative to `express settings.view` + `layouts/`, you will need to reflect that by passing an updated path as the `layoutsDir` property in your configuration.
+**Note:** If you configure Express to look for views in a custom location (e.g., `app.set('views', 'some/path/')`), and if your `layoutsDir` is not relative to `express settings.view` + `layouts/`, you will need to reflect that by passing an updated path as the `layoutsDir` property in your configuration.
 
 #### `partialsDir`
 Default partials directory is relative to `express settings.view` + `partials/`
