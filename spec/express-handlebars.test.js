@@ -229,6 +229,37 @@ describe("express-handlebars", () => {
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
 		});
 
+		test("should use settings.views when it changes", async () => {
+			const exphbs = new ExpressHandlebars();
+			const viewPath = fixturePath("render-partial.handlebars");
+			const viewsPath = fixturePath();
+			const html = await exphbs.renderView(viewPath, {
+				text: "test text",
+				settings: { views: viewsPath },
+			});
+			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
+			const otherViewsPath = fixturePath("other-views");
+			const otherhtml = await exphbs.renderView(viewPath, {
+				text: "test text",
+				settings: { views: otherViewsPath },
+			});
+			expect(otherhtml.replace(/\r/g, "")).toBe("<body>\nother layout\n<h1>other partial test text</h1>\n<p>test text</p>\n</body>");
+		});
+
+		test("should not overwrite config with settings.views", async () => {
+			const exphbs = new ExpressHandlebars({
+				layoutsDir: fixturePath("layouts"),
+				partialsDir: fixturePath("partials"),
+			});
+			const viewPath = fixturePath("render-partial.handlebars");
+			const viewsPath = fixturePath("other-views");
+			const html = await exphbs.renderView(viewPath, {
+				text: "test text",
+				settings: { views: viewsPath },
+			});
+			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
+		});
+
 		test("should merge helpers", async () => {
 			const exphbs = new ExpressHandlebars({
 				defaultLayout: null,
