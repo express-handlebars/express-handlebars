@@ -213,7 +213,7 @@ describe("express-handlebars", () => {
 			});
 			const filePath = fixturePath("render-partial.handlebars");
 			const html = await exphbs.render(filePath, { text: "test text" });
-			expect(html).toBe("<h1>partial test text</h1>\n<p>test text</p>");
+			expect(html.replace(/\r/g, "")).toBe("<h1>partial test text</h1>\n<p>test text</p>");
 		});
 	});
 
@@ -226,7 +226,7 @@ describe("express-handlebars", () => {
 				text: "test text",
 				settings: { views: viewsPath },
 			});
-			expect(html).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
+			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
 		});
 
 		test("should merge helpers", async () => {
@@ -254,7 +254,7 @@ describe("express-handlebars", () => {
 				text: "test text",
 				layout: layoutPath,
 			});
-			expect(html).toBe("<body>\n<p>test text</p>\n</body>");
+			expect(html.replace(/\r/g, "")).toBe("<body>\n<p>test text</p>\n</body>");
 		});
 
 		test("should render html", async () => {
