@@ -215,6 +215,31 @@ describe("express-handlebars", () => {
 			const html = await exphbs.render(filePath, { text: "test text" });
 			expect(html.replace(/\r/g, "")).toBe("<h1>partial test text</h1>\n<p>test text</p>");
 		});
+
+		test("should render with runtimeOptions", async () => {
+			const exphbs = new ExpressHandlebars({
+				runtimeOptions: { runtimeOptionTest: "test" },
+			});
+			const filePath = fixturePath("test");
+			const spy = jest.fn(() => { return "test"; });
+			exphbs.compiled[filePath] = spy;
+			await exphbs.render(filePath, null, { cache: true });
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test" }));
+		});
+
+		test("should override runtimeOptions", async () => {
+			const exphbs = new ExpressHandlebars({
+				runtimeOptions: { runtimeOptionTest: "test" },
+			});
+			const filePath = fixturePath("test");
+			const spy = jest.fn(() => { return "test"; });
+			exphbs.compiled[filePath] = spy;
+			await exphbs.render(filePath, null, {
+				cache: true,
+				runtimeOptions: { runtimeOptionTest: "test2" },
+			});
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test2" }));
+		});
 	});
 
 	describe("renderView", () => {
@@ -313,6 +338,18 @@ describe("express-handlebars", () => {
 				expect(html).toBeUndefined();
 				done();
 			});
+		});
+
+		test("should use runtimeOptions", async () => {
+			const exphbs = new ExpressHandlebars({ defaultLayout: null });
+			const filePath = fixturePath("test");
+			const spy = jest.fn(() => { return "test"; });
+			exphbs.compiled[filePath] = spy;
+			await exphbs.renderView(filePath, {
+				cache: true,
+				runtimeOptions: { runtimeOptionTest: "test" },
+			});
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test" }));
 		});
 	});
 });
