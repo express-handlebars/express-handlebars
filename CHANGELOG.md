@@ -1,3 +1,11 @@
+## [4.0.5](https://github.com/express-handlebars/express-handlebars/compare/v4.0.4...v4.0.5) (2020-07-03)
+
+
+### Bug Fixes
+
+* overwrite past settings.views ([c27f1b0](https://github.com/express-handlebars/express-handlebars/commit/c27f1b0e8dcf2be974584861433cfb01a10ce1f6))
+* renderView returns promise when no callback given ([c39ed87](https://github.com/express-handlebars/express-handlebars/commit/c39ed87f2478ed64211821a6ffe1dca7212fb21b))
+
 ## [4.0.4](https://github.com/express-handlebars/express-handlebars/compare/v4.0.3...v4.0.4) (2020-04-29)
 
 
