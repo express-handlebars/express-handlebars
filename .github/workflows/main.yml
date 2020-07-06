@@ -9,19 +9,40 @@ env:
   CI: true
 
 jobs:
-  Test:
+  TestOS:
+    name: Test
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [macos-latest, windows-latest]
+        node_version: ['lts/*']
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
     - name: Install Node
-      uses: actions/setup-node@v1
+      uses: dcodeIO/setup-node-nvm@master
       with:
-        node-version: '12.x'
+        node-version: ${{ matrix.node_version }}
+    - name: Install dependencies
+      run: npm ci
+    - name: Run tests 👩🏾‍💻
+      run: npm run test
+  TestNode:
+    name: Test
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node_version: [10, 'lts/*', 'node']
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Install Node
+      uses: dcodeIO/setup-node-nvm@master
+      with:
+        node-version: ${{ matrix.node_version }}
     - name: Install dependencies
       run: npm ci
     - name: Run tests 👩🏾‍💻
@@ -33,9 +54,9 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v2
     - name: Install Node
-      uses: actions/setup-node@v1
+      uses: dcodeIO/setup-node-nvm@master
       with:
-        node-version: '13.x'
+        node-version: 'lts/*'
     - name: Install dependencies
       run: npm ci
     - name: Run tests 👩🏾‍💻
@@ -46,13 +67,17 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+      - name: Install Node
+        uses: dcodeIO/setup-node-nvm@master
+        with:
+          node-version: 'lts/*'
       - name: NPM install
         run: npm ci
       - name: Lint ✨
         run: npm run lint
 
   Release:
-    needs: [Test, Lint]
+    needs: [TestOS, TestNode, Coverage, Lint]
     if: |
       github.ref == 'refs/heads/master' &&
       github.event.repository.fork == false

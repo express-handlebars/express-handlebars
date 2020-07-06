@@ -16,6 +16,9 @@ module.exports = {
 		"comma-dangle": ["error", "always-multiline"],
 		indent: ["error", "tab", { SwitchCase: 1 }],
 		"no-tabs": "off",
+		"no-var": "error",
+		"prefer-const": "error",
+		"object-shorthand": "error",
 		"no-restricted-globals": [
 			"error",
 			{
