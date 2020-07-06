@@ -1,16 +1,16 @@
 "use strict";
 
-var Promise = global.Promise || require("promise");
+const Promise = global.Promise || require("promise");
 
-var express = require("express");
-var exphbs = require("../../"); // "express-handlebars"
-var helpers = require("./lib/helpers");
+const express = require("express");
+const exphbs = require("../../"); // "express-handlebars"
+const helpers = require("./lib/helpers");
 
-var app = express();
+const app = express();
 
 // Create `ExpressHandlebars` instance with a default layout.
-var hbs = exphbs.create({
-	helpers: helpers,
+const hbs = exphbs.create({
+	helpers,
 
 	// Uses multiple partials dirs, templates in "shared/templates/" are shared
 	// with the client-side of the app (see below).
@@ -34,7 +34,7 @@ function exposeTemplates (req, res, next) {
 		precompiled: true,
 	}).then(function (templates) {
 		// RegExp to remove the ".handlebars" extension from the template names.
-		var extRegex = new RegExp(hbs.extname + "$");
+		const extRegex = new RegExp(hbs.extname + "$");
 
 		// Creates an array of templates which are exposed via
 		// `res.locals.templates`.
@@ -77,7 +77,7 @@ app.get("/exclaim", function (req, res) {
 
 		// This overrides _only_ the default `yell()` helper.
 		helpers: {
-			yell: function (msg) {
+			yell (msg) {
 				return (msg + "!!!");
 			},
 		},
