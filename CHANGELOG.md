@@ -1,3 +1,10 @@
+## [4.0.6](https://github.com/express-handlebars/express-handlebars/compare/v4.0.5...v4.0.6) (2020-07-06)
+
+
+### Bug Fixes
+
+* add runtimeOptions ([b64284f](https://github.com/express-handlebars/express-handlebars/commit/b64284f6f6eab2d184671736c33fc45df5b26246))
+
 ## [4.0.5](https://github.com/express-handlebars/express-handlebars/compare/v4.0.4...v4.0.5) (2020-07-03)
 
 
