@@ -54,6 +54,21 @@ describe("express-handlebars", () => {
 			});
 		});
 
+		test("should return partials on object", async () => {
+			const fn = jest.fn();
+			const exphbs = expressHandlebars.create({
+				partialsDir: {
+					templates: { "partial template": fn },
+					namespace: "partial namespace",
+					dir: fixturePath("partials"),
+				},
+			});
+			const partials = await exphbs.getPartials();
+			expect(partials).toEqual({
+				"partial namespace/partial template": fn,
+			});
+		});
+
 		test("should return partials on path relative to cwd", async () => {
 			const exphbs = expressHandlebars.create({ partialsDir: "spec/fixtures/partials" });
 			const partials = await exphbs.getPartials();
@@ -364,6 +379,18 @@ describe("express-handlebars", () => {
 			});
 		});
 
+		test("should reject with error", async () => {
+			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const viewPath = "does-not-exist";
+			let error;
+			try {
+				await exphbs.renderView(viewPath);
+			} catch (e) {
+				error = e;
+			}
+			expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
+		});
+
 		test("should use runtimeOptions", async () => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const filePath = fixturePath("test");
@@ -374,6 +401,172 @@ describe("express-handlebars", () => {
 				runtimeOptions: { runtimeOptionTest: "test" },
 			});
 			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test" }));
+		});
+	});
+
+	describe("hooks", () => {
+		describe("_compileTemplate", () => {
+			test("should call template with context and options", () => {
+				const exphbs = expressHandlebars.create();
+				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
+				const template = "template";
+				const options = {};
+				exphbs._compileTemplate(template, options);
+				expect(exphbs.handlebars.compile).toHaveBeenCalledWith(template, options);
+			});
+
+			test("should trim template", () => {
+				const exphbs = expressHandlebars.create();
+				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
+				const template = " template\n";
+				const options = {};
+				exphbs._compileTemplate(template, options);
+				expect(exphbs.handlebars.compile).toHaveBeenCalledWith("template", options);
+			});
+		});
+
+		describe("_precompileTemplate", () => {
+			test("should call template with context and options", () => {
+				const exphbs = expressHandlebars.create();
+				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
+				const template = "template";
+				const options = {};
+				exphbs._precompileTemplate(template, options);
+				expect(exphbs.handlebars.precompile).toHaveBeenCalledWith(template, options);
+			});
+
+			test("should trim template", () => {
+				const exphbs = expressHandlebars.create();
+				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
+				const template = " template\n";
+				const options = {};
+				exphbs._precompileTemplate(template, options);
+				expect(exphbs.handlebars.precompile).toHaveBeenCalledWith("template", options);
+			});
+		});
+
+		describe("_renderTemplate", () => {
+			test("should call template with context and options", () => {
+				const exphbs = expressHandlebars.create();
+				const template = jest.fn(() => "");
+				const context = {};
+				const options = {};
+				exphbs._renderTemplate(template, context, options);
+				expect(template).toHaveBeenCalledWith(context, options);
+			});
+
+			test("should trim html", () => {
+				const exphbs = expressHandlebars.create();
+				const template = () => " \n";
+				const html = exphbs._renderTemplate(template);
+				expect(html).toBe("");
+			});
+		});
+
+		describe("_getDir", () => {
+			test("should get from cache", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("test");
+				exphbs._fsCache[filePath] = "test";
+				const file = await exphbs._getDir(filePath, { cache: true });
+				expect(file).toBe("test");
+			});
+
+			test("should store in cache", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("templates");
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+				await exphbs._getDir(filePath);
+				expect(exphbs._fsCache[filePath]).toBeDefined();
+			});
+
+			test("should not store in cache on error", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = "test";
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+				let error;
+				try {
+					await exphbs._getDir(filePath, { _throwTestError: true });
+				} catch (e) {
+					error = e;
+				}
+				expect(error).toBeTruthy();
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+			});
+		});
+
+		describe("_getFile", () => {
+			test("should get from cache", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("test");
+				exphbs._fsCache[filePath] = "test";
+				const file = await exphbs._getFile(filePath, { cache: true });
+				expect(file).toBe("test");
+			});
+
+			test("should store in cache", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("render-text.handlebars");
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+				await exphbs._getFile(filePath);
+				expect(exphbs._fsCache[filePath]).toBeDefined();
+			});
+
+			test("should not store in cache on error", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = "does-not-exist";
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+				let error;
+				try {
+					await exphbs._getFile(filePath);
+				} catch (e) {
+					error = e;
+				}
+				expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
+				expect(exphbs._fsCache[filePath]).toBeUndefined();
+			});
+		});
+
+		describe("_getTemplateName", () => {
+			test("should remove extension", () => {
+				const exphbs = expressHandlebars.create();
+				const name = exphbs._getTemplateName("filePath.handlebars");
+				expect(name).toBe("filePath");
+			});
+
+			test("should leave if no extension", () => {
+				const exphbs = expressHandlebars.create();
+				const name = exphbs._getTemplateName("filePath");
+				expect(name).toBe("filePath");
+			});
+
+			test("should add namespace", () => {
+				const exphbs = expressHandlebars.create();
+				const name = exphbs._getTemplateName("filePath.handlebars", "namespace");
+				expect(name).toBe("namespace/filePath");
+			});
+		});
+
+		describe("_resolveLayoutPath", () => {
+			test("should add extension", () => {
+				const exphbs = expressHandlebars.create();
+				const layoutPath = exphbs._resolveLayoutPath("filePath");
+				expect(layoutPath).toEqual(expect.stringMatching(/filePath\.handlebars$/));
+			});
+
+			test("should use layoutsDir", () => {
+				const layoutsDir = fixturePath("layouts");
+				const filePath = "filePath.handlebars";
+				const exphbs = expressHandlebars.create({ layoutsDir });
+				const layoutPath = exphbs._resolveLayoutPath(filePath);
+				expect(layoutPath).toBe(path.resolve(layoutsDir, filePath));
+			});
+
+			test("should return null", () => {
+				const exphbs = expressHandlebars.create();
+				const layoutPath = exphbs._resolveLayoutPath(null);
+				expect(layoutPath).toBe(null);
+			});
 		});
 	});
 });

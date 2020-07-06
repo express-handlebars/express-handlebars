@@ -1,13 +1,12 @@
 module.exports = {
 	restoreMocks: true,
 	clearMocks: true,
-	// collectCoverage: true,
 	collectCoverageFrom: [
 		"lib/**/*.js",
+		"index.js",
 		"!**/node_modules/**",
 	],
 	coverageDirectory: "coverage",
-	/*
 	coverageThreshold: {
 		global: {
 			branches: 100,
@@ -16,6 +15,5 @@ module.exports = {
 			statements: 100,
 		},
 	},
-	*/
 	testRegex: /\.test\.jsx?/.source,
 };
