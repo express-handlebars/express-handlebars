@@ -9,8 +9,8 @@ A [Handlebars][] view engine for [Express][] which doesn't suck.
 **This package used to be named `express3-handlebars`. The previous `express-handlebars` package by @jneen can be found [here][jneen-exphbs].**
 
 
-[Express]: https://github.com/visionmedia/express
-[Handlebars]: https://github.com/wycats/handlebars.js
+[Express]: https://github.com/expressjs/express
+[Handlebars]: https://github.com/handlebars-lang/handlebars.js
 [npm]: https://www.npmjs.org/package/express-handlebars
 [npm-badge]: https://img.shields.io/npm/v/express-handlebars.svg?style=flat-square
 [dep-status]: https://david-dm.org/express-handlebars/express-handlebars
@@ -155,7 +155,7 @@ var hbs = exphbs.create({ /* config */ });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// ...still have a reference to `hbs`, on which methods like `loadPartials()`
+// ...still have a reference to `hbs`, on which methods like `getPartials()`
 // can be called.
 ```
 
@@ -285,16 +285,17 @@ The following is the list of metadata that's accessible on the `{{@exphbs}}` dat
 * `data`: Original data object passed when rendering the template.
 * `helpers`: Collection of helpers used when rendering the template.
 * `partials`: Collection of partials used when rendering the template.
+* `runtimeOptions`: Runtime Options used to render the template.
 
 
 [examples directory]: https://github.com/express-handlebars/express-handlebars/tree/master/examples
-[view cache setting]: http://expressjs.com/api.html#app-settings
-[Express locals]: http://expressjs.com/api.html#app.locals
+[view cache setting]: https://expressjs.com/en/api.html#app.settings.table
+[Express locals]: https://expressjs.com/en/api.html#app.locals
 [registered with Handlebars]: https://github.com/wycats/handlebars.js/#registering-helpers
-[built-in helpers]: http://handlebarsjs.com/#builtins
-[Handlebars website]: http://handlebarsjs.com/
-[Expression Helpers]: http://handlebarsjs.com/expressions.html#helpers
-[Block Helpers]: http://handlebarsjs.com/block_helpers.html
+[built-in helpers]: https://handlebarsjs.com/guide/builtin-helpers.html
+[Handlebars website]: https://handlebarsjs.com/
+[Expression Helpers]: https://handlebarsjs.com/guide/#custom-helpers
+[Block Helpers]: https://handlebarsjs.com/guide/#block-helpers
 
 
 ## API
@@ -361,6 +362,9 @@ An object which holds the helper functions used when rendering templates with th
 
 #### `compilerOptions`
 An object which holds options that will be passed along to the Handlebars compiler functions: `Handlebars.compile()` and `Handlebars.precompile()`.
+
+#### `runtimeOptions`
+An object which holds options that will be passed along to the template function in addition to the `data`, `helpers`, and `partials` options. See [Runtime Options][] for a list of available options.
 
 ### Properties
 
@@ -470,6 +474,8 @@ Renders the template at the specified `filePath` with the `context`, using this 
 
   * `[partials]`: Render-level partials that will be used instead of any instance-level partials. This is used internally as an optimization to avoid re-loading all the partials.
 
+  * `[runtimeOptions]`: Optional object which can contain options passed to the template function.
+
 #### `renderView(viewPath, options|callback, [callback])`
 Renders the template at the specified `viewPath` as the `{{{body}}}` within the layout specified by the `defaultLayout` or `options.layout`. Rendering will use this instance's `helpers` and partials, and passes the resulting string to the `callback`.
 
@@ -492,6 +498,8 @@ The `options` will be used both as the context in which the Handlebars templates
   * `[partials]`: Render-level partials will be merged with (and will override) instance and global partials. This should be a `{partialName: fn}` hash or a Promise of an object with this shape.
 
   * `[layout]`: Optional string path to the Handlebars template file to be used as the "layout". This overrides any `defaultLayout` value. Passing a falsy value will render with no layout (even if a `defaultLayout` is defined).
+
+  * `[runtimeOptions]`: Optional object which can contain options passed to the template function.
 
 * `callback`: Function to call once the template is retrieved.
 
@@ -540,8 +548,11 @@ By default this hook simply calls the passed-in `template` with the `context` an
 
   * `partials`: Object to provide custom partials in addition to the globally defined partials.
 
+  * `...runtimeOptions`: Other options specified by the `runtimeOptions` value.
+
 
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[Runtime Options]: https://handlebarsjs.com/api-reference/runtime-options.html
 
 
 ## Examples
