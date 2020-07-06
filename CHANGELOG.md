@@ -1,3 +1,16 @@
+# [5.0.0](https://github.com/express-handlebars/express-handlebars/compare/v4.0.6...v5.0.0) (2020-07-06)
+
+
+### Bug Fixes
+
+* update code to es2015+ ([e5a08ee](https://github.com/express-handlebars/express-handlebars/commit/e5a08eed844f177b0f365f882a20c7b229715bdd))
+* update node support ([ea30d53](https://github.com/express-handlebars/express-handlebars/commit/ea30d531b2f458c37f65b50bddc504180e774f8f))
+
+
+### BREAKING CHANGES
+
+* Drop support for node versions below v10
+
 ## [4.0.6](https://github.com/express-handlebars/express-handlebars/compare/v4.0.5...v4.0.6) (2020-07-06)
 
 
