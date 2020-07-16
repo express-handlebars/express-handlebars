@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/express-handlebars/express-handlebars/compare/v5.0.0...v5.1.0) (2020-07-16)
+
+
+### Features
+
+* add encoding option ([9e516c3](https://github.com/express-handlebars/express-handlebars/commit/9e516c382269b3ab586a6ab0dbd586b3c23110c4))
+
 # [5.0.0](https://github.com/express-handlebars/express-handlebars/compare/v4.0.6...v5.0.0) (2020-07-06)
 
 
