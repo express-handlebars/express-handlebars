@@ -43,6 +43,7 @@ describe("express-handlebars", () => {
 			const partials = await exphbs.getPartials();
 			expect(partials).toEqual({
 				partial: expect.any(Function),
+				"partial-latin1": expect.any(Function),
 			});
 		});
 
@@ -51,6 +52,7 @@ describe("express-handlebars", () => {
 			const partials = await exphbs.getPartials();
 			expect(partials).toEqual({
 				partial: expect.any(Function),
+				"partial-latin1": expect.any(Function),
 			});
 		});
 
@@ -74,6 +76,7 @@ describe("express-handlebars", () => {
 			const partials = await exphbs.getPartials();
 			expect(partials).toEqual({
 				partial: expect.any(Function),
+				"partial-latin1": expect.any(Function),
 			});
 		});
 
@@ -82,6 +85,23 @@ describe("express-handlebars", () => {
 			const partials = await exphbs.getPartials();
 			const html = partials.partial({ text: "test text" });
 			expect(html).toBe("partial test text");
+		});
+
+		test("should return a template with encoding", async () => {
+			const exphbs = expressHandlebars.create({ partialsDir: "spec/fixtures/partials" });
+			const partials = await exphbs.getPartials({ encoding: "latin1" });
+			const html = partials["partial-latin1"]();
+			expect(html).toContain("ñáéíóú");
+		});
+
+		test("should return a template with default encoding", async () => {
+			const exphbs = expressHandlebars.create({
+				encoding: "latin1",
+				partialsDir: "spec/fixtures/partials",
+			});
+			const partials = await exphbs.getPartials();
+			const html = partials["partial-latin1"]();
+			expect(html).toContain("ñáéíóú");
 		});
 	});
 
@@ -136,6 +156,22 @@ describe("express-handlebars", () => {
 			expect(html).toBe("<p>test text</p>");
 		});
 
+		test("should return a template with encoding", async () => {
+			const exphbs = expressHandlebars.create();
+			const filePath = fixturePath("templates/template-latin1.handlebars");
+			const template = await exphbs.getTemplate(filePath, { encoding: "latin1" });
+			const html = template();
+			expect(html).toContain("ñáéíóú");
+		});
+
+		test("should return a template with default encoding", async () => {
+			const exphbs = expressHandlebars.create({ encoding: "latin1" });
+			const filePath = fixturePath("templates/template-latin1.handlebars");
+			const template = await exphbs.getTemplate(filePath);
+			const html = template();
+			expect(html).toContain("ñáéíóú");
+		});
+
 		test("should not store in cache on error", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = "does-not-exist";
@@ -175,6 +211,7 @@ describe("express-handlebars", () => {
 			const templates = await exphbs.getTemplates(dirPath);
 			expect(Object.keys(templates)).toEqual([
 				"subdir/template.handlebars",
+				"template-latin1.handlebars",
 				"template.handlebars",
 			]);
 		});
@@ -220,6 +257,27 @@ describe("express-handlebars", () => {
 			const filePath = fixturePath("render-text.handlebars");
 			const html = await exphbs.render(filePath, { text: "test text" });
 			expect(html).toBe("<p>test text</p>");
+		});
+
+		test("should return html with encoding", async () => {
+			const exphbs = expressHandlebars.create({
+				partialsDir: fixturePath("partials"),
+			});
+			const filePath = fixturePath("render-latin1.handlebars");
+			const html = await exphbs.render(filePath, null, { encoding: "latin1" });
+			expect(html).toContain("partial ñáéíóú");
+			expect(html).toContain("render ñáéíóú");
+		});
+
+		test("should return html with default encoding", async () => {
+			const exphbs = expressHandlebars.create({
+				encoding: "latin1",
+				partialsDir: fixturePath("partials"),
+			});
+			const filePath = fixturePath("render-latin1.handlebars");
+			const html = await exphbs.render(filePath);
+			expect(html).toContain("partial ñáéíóú");
+			expect(html).toContain("render ñáéíóú");
 		});
 
 		test("should render with partial", async () => {
@@ -357,6 +415,33 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await exphbs.renderView(viewPath, { text: "test text" });
 			expect(html).toBe("<p>test text</p>");
+		});
+
+		test("should render html with encoding", async () => {
+			const exphbs = expressHandlebars.create({
+				defaultLayout: "main-latin1",
+				partialsDir: fixturePath("partials"),
+				layoutsDir: fixturePath("layouts"),
+			});
+			const viewPath = fixturePath("render-latin1.handlebars");
+			const html = await exphbs.renderView(viewPath, { encoding: "latin1" });
+			expect(html).toContain("layout ñáéíóú");
+			expect(html).toContain("partial ñáéíóú");
+			expect(html).toContain("render ñáéíóú");
+		});
+
+		test("should render html with default encoding", async () => {
+			const exphbs = expressHandlebars.create({
+				encoding: "latin1",
+				defaultLayout: "main-latin1",
+				partialsDir: fixturePath("partials"),
+				layoutsDir: fixturePath("layouts"),
+			});
+			const viewPath = fixturePath("render-latin1.handlebars");
+			const html = await exphbs.renderView(viewPath);
+			expect(html).toContain("layout ñáéíóú");
+			expect(html).toContain("partial ñáéíóú");
+			expect(html).toContain("render ñáéíóú");
 		});
 
 		test("should call callback with html", (done) => {
@@ -524,6 +609,34 @@ describe("express-handlebars", () => {
 				}
 				expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
+			});
+
+			test("should read as utf8", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("render-text.handlebars");
+				const text = await exphbs._getFile(filePath);
+				expect(text.trim()).toBe("<p>{{text}}</p>");
+			});
+
+			test("should read as utf8 by default", async () => {
+				const exphbs = expressHandlebars.create({ encoding: null });
+				const filePath = fixturePath("render-text.handlebars");
+				const text = await exphbs._getFile(filePath);
+				expect(text.trim()).toBe("<p>{{text}}</p>");
+			});
+
+			test("should read as latin1", async () => {
+				const exphbs = expressHandlebars.create();
+				const filePath = fixturePath("render-latin1.handlebars");
+				const text = await exphbs._getFile(filePath, { encoding: "latin1" });
+				expect(text).toContain("ñáéíóú");
+			});
+
+			test("should read as default encoding", async () => {
+				const exphbs = expressHandlebars.create({ encoding: "latin1" });
+				const filePath = fixturePath("render-latin1.handlebars");
+				const text = await exphbs._getFile(filePath);
+				expect(text).toContain("ñáéíóú");
 			});
 		});
 

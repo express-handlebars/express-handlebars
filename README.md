@@ -280,6 +280,7 @@ Handlebars has a data channel feature that propagates data through all scopes, i
 The following is the list of metadata that's accessible on the `{{@exphbs}}` data object:
 
 * `cache`: Boolean whether or not the template is cached.
+* `encoding`: String name of encoding for files.
 * `view`: String name of the view passed to `res.render()`.
 * `layout`: String name of the layout view.
 * `data`: Original data object passed when rendering the template.
@@ -335,6 +336,9 @@ app.set('view engine', '.hbs');
 ```
 
 **Note:** Setting the app's `"view engine"` setting will make that value the default file extension used for looking up views.
+
+#### `encoding="utf8"`
+Default encoding when reading files.
 
 #### `layoutsDir`
 Default layouts directory is relative to `express settings.view` + `layouts/`
@@ -399,6 +403,8 @@ By default each partial will be a compiled Handlebars template function. Use `op
 
   * `[cache]`: Whether cached templates can be used if they have already been requested. This is recommended for production to avoid unnecessary file I/O.
 
+  * `[encoding]`: File encoding.
+
   * `[precompiled=false]`: Whether precompiled templates should be provided, instead of compiled Handlebars template functions.
 
 The name of each partial corresponds to its location in `partialsDir`. For example, consider the following directory structure:
@@ -438,6 +444,8 @@ Use `options.precompiled` to receive a precompiled Handlebars template.
 
   * `[cache]`: Whether a cached template can be used if it have already been requested. This is recommended for production to avoid necessary file I/O.
 
+  * `[encoding]`: File encoding.
+
   * `[precompiled=false]`: Whether a precompiled template should be provided, instead of a compiled Handlebars template function.
 
 #### `getTemplates(dirPath, [options])`
@@ -452,6 +460,8 @@ Use `options.precompiled` to receive precompiled Handlebars templates — this i
 * `[options]`: Optional object containing any of the following properties:
 
   * `[cache]`: Whether cached templates can be used if it have already been requested. This is recommended for production to avoid necessary file I/O.
+
+  * `[encoding]`: File encoding.
 
   * `[precompiled=false]`: Whether precompiled templates should be provided, instead of a compiled Handlebars template function.
 
@@ -468,6 +478,8 @@ Renders the template at the specified `filePath` with the `context`, using this 
 
   * `[cache]`: Whether a cached template can be used if it have already been requested. This is recommended for production to avoid unnecessary file I/O.
 
+  * `[encoding]`: File encoding.
+
   * `[data]`: Optional object which can contain any data that Handlebars will pipe through the template, all helpers, and all partials. This is a side data channel.
 
   * `[helpers]`: Render-level helpers that will be used instead of any instance-level helpers; these will be merged with (and will override) any global Handlebars helper functions.
@@ -481,7 +493,7 @@ Renders the template at the specified `viewPath` as the `{{{body}}}` within the 
 
 This method is called by Express and is the main entry point into this Express view engine implementation. It adds the concept of a "layout" and delegates rendering to the `render()` method.
 
-The `options` will be used both as the context in which the Handlebars templates are rendered, and to signal this view engine on how it should behave, e.g., `options.cache=false` will load _always_ load the templates from disk.
+The `options` will be used both as the context in which the Handlebars templates are rendered, and to signal this view engine on how it should behave, e.g., `options.cache=false` will _always_ load the templates from disk.
 
 **Parameters:**
 
@@ -490,6 +502,8 @@ The `options` will be used both as the context in which the Handlebars templates
 * `[options]`: Optional object which will serve as the context in which the Handlebars templates are rendered. It may also contain any of the following properties which affect this view engine's behavior:
 
   * `[cache]`: Whether cached templates can be used if they have already been requested. This is recommended for production to avoid unnecessary file I/O.
+
+  * `[encoding]`: File encoding.
 
   * `[data]`: Optional object which can contain any data that Handlebars will pipe through the template, all helpers, and all partials. This is a side data channel.
 
