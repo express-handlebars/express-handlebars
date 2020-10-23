@@ -351,6 +351,28 @@ describe("express-handlebars", () => {
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
 		});
 
+		test("should use settings.views array", async () => {
+			const exphbs = expressHandlebars.create();
+			const viewPath = fixturePath("render-partial.handlebars");
+			const viewsPath = fixturePath();
+			const html = await exphbs.renderView(viewPath, {
+				text: "test text",
+				settings: { views: [viewsPath] },
+			});
+			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
+		});
+
+		test("should not use settings.views array when no parent found", async () => {
+			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const viewPath = fixturePath("render-text.handlebars");
+			const viewsPath = "does-not-exist";
+			const html = await exphbs.renderView(viewPath, {
+				text: "test text",
+				settings: { views: [viewsPath] },
+			});
+			expect(html).toBe("<p>test text</p>");
+		});
+
 		test("should use settings.views when it changes", async () => {
 			const exphbs = expressHandlebars.create();
 			const viewPath = fixturePath("render-partial.handlebars");
@@ -657,6 +679,40 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const name = exphbs._getTemplateName("filePath.handlebars", "namespace");
 				expect(name).toBe("namespace/filePath");
+			});
+		});
+
+		describe("_resolveViewsPath", () => {
+			test("should return closest parent", () => {
+				const file = "/root/views/file.hbs";
+				const exphbs = expressHandlebars.create();
+				const viewsPath = exphbs._resolveViewsPath([
+					"/root",
+					"/root/views",
+					"/root/views/file",
+				], file);
+				expect(viewsPath).toBe("/root/views");
+			});
+
+			test("should return string views", () => {
+				const exphbs = expressHandlebars.create();
+				const viewsPath = exphbs._resolveViewsPath("./views", "filePath.hbs");
+				expect(viewsPath).toBe("./views");
+			});
+
+			test("should return null views", () => {
+				const exphbs = expressHandlebars.create();
+				const viewsPath = exphbs._resolveViewsPath(null, "filePath.hbs");
+				expect(viewsPath).toBe(null);
+			});
+
+			test("should return null if not found", () => {
+				const file = "/file.hbs";
+				const exphbs = expressHandlebars.create();
+				const viewsPath = exphbs._resolveViewsPath([
+					"/views",
+				], file);
+				expect(viewsPath).toBe(null);
 			});
 		});
 
