@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/express-handlebars/express-handlebars/compare/v5.1.0...v5.2.0) (2020-10-23)
+
+
+### Features
+
+* allow views to be an array ([a9f4aaa](https://github.com/express-handlebars/express-handlebars/commit/a9f4aaabd657221236b7321a4f87df7c9eb9a1bd))
+
 # [5.1.0](https://github.com/express-handlebars/express-handlebars/compare/v5.0.0...v5.1.0) (2020-07-16)
 
 
