@@ -45,7 +45,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "jest-cli": "^26.6.3",
-    "semantic-release": "^17.3.2"
+    "semantic-release": "^17.3.3"
   },
   "release": {
     "plugins": [
