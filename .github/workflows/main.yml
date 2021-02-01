@@ -85,8 +85,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+      - name: Install Node
+        uses: dcodeIO/setup-node-nvm@master
+        with:
+          node-version: 'lts/*'
       - name: NPM install
         run: npm ci
+      - name: NPM build
+        run: npm run build
       - name: Release 🎉
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

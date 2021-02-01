@@ -1,11 +1,17 @@
 module.exports = {
+	root: true,
 	env: {
 		node: true,
 		jest: true,
 	},
 	extends: [
 		"standard",
+		"plugin:@typescript-eslint/recommended",
 	],
+	plugins: [
+		"@typescript-eslint",
+	],
+	parser: "@typescript-eslint/parser",
 	parserOptions: {
 		ecmaVersion: 2018,
 	},
@@ -30,5 +36,7 @@ module.exports = {
 				message: "Do not commit focused tests.",
 			},
 		],
+		"@typescript-eslint/ban-ts-comment": "warn",
+		"@typescript-eslint/no-var-requires": "warn",
 	},
 };
