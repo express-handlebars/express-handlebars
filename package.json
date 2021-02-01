@@ -21,14 +21,14 @@
     "url": "https://github.com/express-handlebars/express-handlebars/issues"
   },
   "engines": {
-    "node": ">=v10.24.1"
+    "node": ">=v12"
   },
   "dependencies": {
     "glob": "^7.2.0",
     "graceful-fs": "^4.2.8",
     "handlebars": "^4.7.7"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "directories": {
     "example": "examples"
   },
@@ -39,13 +39,19 @@
     "@semantic-release/github": "^8.0.2",
     "@semantic-release/npm": "^8.0.3",
     "@semantic-release/release-notes-generator": "^10.0.2",
+    "@types/glob": "^7.2.0",
+    "@types/jest": "^27.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
+    "@typescript-eslint/parser": "^5.3.1",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "jest-cli": "^27.3.1",
-    "semantic-release": "^18.0.0"
+    "semantic-release": "^18.0.0",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
   },
   "release": {
     "plugins": [
@@ -60,7 +66,8 @@
   "scripts": {
     "test": "jest --verbose",
     "test:cover": "jest --coverage",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "tsc"
   },
   "license": "BSD-3-Clause"
 }
