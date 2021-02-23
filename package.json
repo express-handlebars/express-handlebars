@@ -21,7 +21,7 @@
     "url": "https://github.com/express-handlebars/express-handlebars/issues"
   },
   "engines": {
-    "node": ">=v10.23.3"
+    "node": ">=v10.24.0"
   },
   "dependencies": {
     "glob": "^7.1.6",
