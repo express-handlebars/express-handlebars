@@ -1,10 +1,10 @@
 module.exports = {
+	preset: "ts-jest",
+	testEnvironment: "node",
 	restoreMocks: true,
 	clearMocks: true,
 	collectCoverageFrom: [
-		"lib/**/*.js",
-		"index.js",
-		"!**/node_modules/**",
+		"lib/**/*.ts",
 	],
 	coverageDirectory: "coverage",
 	coverageThreshold: {
@@ -15,5 +15,11 @@ module.exports = {
 			statements: 100,
 		},
 	},
-	testRegex: /\.test\.jsx?/.source,
+	testRegex: /\.test\.tsx?/.source,
+	globals: {
+		"ts-jest": {
+			diagnostics: false,
+		},
+	},
+	moduleFileExtensions: ["js", "json", "jsx", "d.ts", "ts", "tsx", "node"],
 };
