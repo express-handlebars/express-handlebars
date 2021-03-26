@@ -71,6 +71,24 @@ describe("express-handlebars", () => {
 			});
 		});
 
+		test("should return renamed partials with rename function", async () => {
+			const fn = jest.fn();
+			const exphbs = expressHandlebars.create({
+				partialsDir: {
+					templates: { "partial/template": fn },
+					namespace: "partial namespace",
+					dir: fixturePath("partials"),
+					rename: (filePath, namespace) => {
+						return `${namespace}/${filePath.split("/")[0]}`;
+					},
+				},
+			});
+			const partials = await exphbs.getPartials();
+			expect(partials).toEqual({
+				"partial namespace/partial": fn,
+			});
+		});
+
 		test("should return partials on path relative to cwd", async () => {
 			const exphbs = expressHandlebars.create({ partialsDir: "spec/fixtures/partials" });
 			const partials = await exphbs.getPartials();
