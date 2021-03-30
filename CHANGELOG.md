@@ -1,3 +1,10 @@
+# [5.3.0](https://github.com/express-handlebars/express-handlebars/compare/v5.2.1...v5.3.0) (2021-03-30)
+
+
+### Features
+
+* Add partialsDir.rename option ([#151](https://github.com/express-handlebars/express-handlebars/issues/151)) ([1a6771b](https://github.com/express-handlebars/express-handlebars/commit/1a6771b0f9a3db1cbd516faf79cb5e20a779e456))
+
 ## [5.2.1](https://github.com/express-handlebars/express-handlebars/compare/v5.2.0...v5.2.1) (2021-02-16)
 
 
