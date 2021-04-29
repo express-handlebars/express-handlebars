@@ -226,7 +226,9 @@ app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res, next) {
     res.render('home', {
-        showTitle: true,
+        context: {
+            showTitle: true,
+        },
 
         // Override `foo` helper only for this rendering.
         helpers: {
@@ -494,13 +496,15 @@ Renders the template at the specified `viewPath` as the `{{{body}}}` within the 
 
 This method is called by Express and is the main entry point into this Express view engine implementation. It adds the concept of a "layout" and delegates rendering to the `render()` method.
 
-The `options` will be used both as the context in which the Handlebars templates are rendered, and to signal this view engine on how it should behave, e.g., `options.cache=false` will _always_ load the templates from disk.
+The `options` will be used to signal this view engine on how it should behave, e.g., `options.cache=false` will _always_ load the templates from disk.
 
 **Parameters:**
 
 * `viewPath`: String path to the Handlebars template file which should serve as the `{{{body}}}` when using a layout.
 
-* `[options]`: Optional object which will serve as the context in which the Handlebars templates are rendered. It may also contain any of the following properties which affect this view engine's behavior:
+* `[options]`: Optional object which will contain any of the following properties which affect this view engine's behavior:
+
+  * `[context]`: The context in which the Handlebars templates are rendered.
 
   * `[cache]`: Whether cached templates can be used if they have already been requested. This is recommended for production to avoid unnecessary file I/O.
 
