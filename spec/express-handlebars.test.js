@@ -352,7 +352,7 @@ describe("express-handlebars", () => {
 		test("should render html", async () => {
 			const renderView = expressHandlebars({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
-			const html = await renderView(viewPath, { text: "test text" });
+			const html = await renderView(viewPath, { context: { text: "test text" } });
 			expect(html).toBe("<p>test text</p>");
 		});
 	});
@@ -363,7 +363,7 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-partial.handlebars");
 			const viewsPath = fixturePath();
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: viewsPath },
 			});
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
@@ -374,7 +374,7 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-partial.handlebars");
 			const viewsPath = fixturePath();
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: [viewsPath] },
 			});
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
@@ -385,7 +385,7 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-text.handlebars");
 			const viewsPath = "does-not-exist";
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: [viewsPath] },
 			});
 			expect(html).toBe("<p>test text</p>");
@@ -396,13 +396,13 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-partial.handlebars");
 			const viewsPath = fixturePath();
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: viewsPath },
 			});
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
 			const otherViewsPath = fixturePath("other-views");
 			const otherhtml = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: otherViewsPath },
 			});
 			expect(otherhtml.replace(/\r/g, "")).toBe("<body>\nother layout\n<h1>other partial test text</h1>\n<p>test text</p>\n</body>");
@@ -416,7 +416,7 @@ describe("express-handlebars", () => {
 			const viewPath = fixturePath("render-partial.handlebars");
 			const viewsPath = fixturePath("other-views");
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				settings: { views: viewsPath },
 			});
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<h1>partial test text</h1>\n<p>test text</p>\n</body>");
@@ -431,7 +431,7 @@ describe("express-handlebars", () => {
 			});
 			const viewPath = fixturePath("render-helper.handlebars");
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				helpers: {
 					help: (text) => text,
 				},
@@ -444,7 +444,7 @@ describe("express-handlebars", () => {
 			const layoutPath = fixturePath("layouts/main.handlebars");
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await exphbs.renderView(viewPath, {
-				text: "test text",
+				context: { text: "test text" },
 				layout: layoutPath,
 			});
 			expect(html.replace(/\r/g, "")).toBe("<body>\n<p>test text</p>\n</body>");
@@ -453,7 +453,7 @@ describe("express-handlebars", () => {
 		test("should render html", async () => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
-			const html = await exphbs.renderView(viewPath, { text: "test text" });
+			const html = await exphbs.renderView(viewPath, { context: { text: "test text" } });
 			expect(html).toBe("<p>test text</p>");
 		});
 
@@ -487,7 +487,7 @@ describe("express-handlebars", () => {
 		test("should call callback with html", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, { text: "test text" }, (err, html) => {
+			exphbs.renderView(viewPath, { context: { text: "test text" } }, (err, html) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p>test text</p>");
 				done();
