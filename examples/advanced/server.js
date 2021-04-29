@@ -57,23 +57,29 @@ function exposeTemplates (req, res, next) {
 
 app.get("/", function (req, res) {
 	res.render("home", {
-		title: "Home",
+		context: {
+			title: "Home",
+		},
 	});
 });
 
 app.get("/yell", function (req, res) {
 	res.render("yell", {
-		title: "Yell",
+		context: {
+			title: "Yell",
 
-		// This `message` will be transformed by our `yell()` helper.
-		message: "hello world",
+			// This `message` will be transformed by our `yell()` helper.
+			message: "hello world",
+		},
 	});
 });
 
 app.get("/exclaim", function (req, res) {
 	res.render("yell", {
-		title: "Exclaim",
-		message: "hello world",
+		context: {
+			title: "Exclaim",
+			message: "hello world",
+		},
 
 		// This overrides _only_ the default `yell()` helper.
 		helpers: {
@@ -86,8 +92,10 @@ app.get("/exclaim", function (req, res) {
 
 app.get("/echo/:message?", exposeTemplates, function (req, res) {
 	res.render("echo", {
-		title: "Echo",
-		message: req.params.message,
+		context: {
+			title: "Echo",
+			message: req.params.message,
+		},
 
 		// Overrides which layout to use, instead of the defaul "main" layout.
 		layout: "shared-templates",
