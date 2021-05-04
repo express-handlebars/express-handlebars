@@ -1,3 +1,10 @@
+## [5.3.1](https://github.com/express-handlebars/express-handlebars/compare/v5.3.0...v5.3.1) (2021-05-04)
+
+
+### Bug Fixes
+
+* add note about security ([78c47a2](https://github.com/express-handlebars/express-handlebars/commit/78c47a235c4ad7bc2674bddd8ec2721567ed8c72))
+
 # [5.3.0](https://github.com/express-handlebars/express-handlebars/compare/v5.2.1...v5.3.0) (2021-03-30)
 
 
