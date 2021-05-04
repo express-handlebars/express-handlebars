@@ -63,6 +63,9 @@ Install using npm:
 $ npm install express-handlebars
 ```
 
+## Danger 🔥
+ 
+Never put objects on the `req` object straight in as the data, this can allow hackers to run XSS attacks. Always make sure you are destructuring the values on objects like `req.query` and `req.params`. See https://blog.shoebpatel.com/2021/01/23/The-Secret-Parameter-LFR-and-Potential-RCE-in-NodeJS-Apps/ for more details.
 
 ## Usage
 
