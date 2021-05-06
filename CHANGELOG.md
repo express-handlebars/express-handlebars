@@ -1,3 +1,10 @@
+## [5.3.2](https://github.com/express-handlebars/express-handlebars/compare/v5.3.1...v5.3.2) (2021-05-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to ^7.1.7 ([8222f00](https://github.com/express-handlebars/express-handlebars/commit/8222f0015805b1287f62a1c66747a7f831a976db))
+
 ## [5.3.1](https://github.com/express-handlebars/express-handlebars/compare/v5.3.0...v5.3.1) (2021-05-04)
 
 
