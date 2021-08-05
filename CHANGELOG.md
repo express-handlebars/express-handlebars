@@ -1,3 +1,10 @@
+## [5.3.3](https://github.com/express-handlebars/express-handlebars/compare/v5.3.2...v5.3.3) (2021-08-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency graceful-fs to ^4.2.7 ([94a4073](https://github.com/express-handlebars/express-handlebars/commit/94a4073bbea4591b57ea5e3cdae03c8fd861d50e))
+
 ## [5.3.2](https://github.com/express-handlebars/express-handlebars/compare/v5.3.1...v5.3.2) (2021-05-06)
 
 
