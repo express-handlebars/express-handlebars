@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "glob": "^7.1.7",
-    "graceful-fs": "^4.2.6",
+    "graceful-fs": "^4.2.7",
     "handlebars": "^4.7.7"
   },
   "main": "index.js",
