@@ -39,7 +39,7 @@
     "@semantic-release/github": "^8.0.1",
     "@semantic-release/npm": "^8.0.2",
     "@semantic-release/release-notes-generator": "^10.0.2",
-    "eslint": "^8.0.1",
+    "eslint": "^8.1.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-node": "^11.1.0",
