@@ -9,7 +9,7 @@ import * as fs from "graceful-fs";
 import * as path from "path";
 import { promisify } from "util";
 import * as globSync from "glob";
-import {
+import type {
 	UnknownObject,
 	FunctionObject,
 	ConfigOptions,
@@ -26,7 +26,7 @@ import {
 	CompiledCache,
 	PrecompiledCache,
 	RenameFunction,
-} from "./types";
+} from "../types";
 
 const glob = promisify(globSync);
 const readFile = promisify(fs.readFile);

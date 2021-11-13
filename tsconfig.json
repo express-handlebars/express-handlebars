@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es5"
+    "target": "es5",
+    "declaration": true,
+    "sourceMap": true
   },
   "include": ["./lib/**/*"]
 }

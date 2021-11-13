@@ -1,8 +1,8 @@
 import * as path from "path";
 import expressHandlebars from "../lib/index";
-import {
+import type {
 	TemplateDelegateObject,
-} from "../lib/types";
+} from "../types";
 
 function fixturePath (filePath = "") {
 	return path.resolve(__dirname, "./fixtures", filePath);

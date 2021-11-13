@@ -8,9 +8,9 @@ import ExpressHandlebars from "./express-handlebars";
 import type {
 	ConfigOptions,
 	Engine,
-} from "./types";
+} from "../types";
 
-export * from "./types";
+export * from "../types";
 export { ExpressHandlebars };
 
 export function create (config: ConfigOptions = {}): ExpressHandlebars {
