@@ -4,16 +4,36 @@
  * See the accompanying LICENSE file for terms.
  */
 
-const util = require("util");
-const glob = util.promisify(require("glob"));
-const Handlebars = require("handlebars");
-const fs = require("graceful-fs");
-const readFile = util.promisify(fs.readFile);
-const path = require("path");
+import * as Handlebars from "handlebars";
+import * as fs from "graceful-fs";
+import * as path from "path";
+import { promisify } from "util";
+import * as globSync from "glob";
+import {
+	UnknownObject,
+	FunctionObject,
+	ConfigOptions,
+	Engine,
+	TemplateSpecificationObject,
+	TemplateDelegateObject,
+	FsCache,
+	PartialTemplateOptions,
+	PartialsDirObject,
+	RenderOptions,
+	RenderViewOptions,
+	RenderCallback,
+	HandlebarsImport,
+	CompiledCache,
+	PrecompiledCache,
+	RenameFunction,
+} from "./types";
+
+const glob = promisify(globSync);
+const readFile = promisify(fs.readFile);
 
 // -----------------------------------------------------------------------------
 
-const defaultConfig = {
+const defaultConfig: ConfigOptions = {
 	handlebars: Handlebars,
 	extname: ".handlebars",
 	encoding: "utf8",
@@ -25,8 +45,23 @@ const defaultConfig = {
 	runtimeOptions: undefined,
 };
 
-class ExpressHandlebars {
-	constructor (config = {}) {
+export default class ExpressHandlebars {
+	config: ConfigOptions;
+	engine: Engine;
+	encoding: BufferEncoding;
+	layoutsDir: string;
+	extname: string;
+	compiled: CompiledCache;
+	precompiled: PrecompiledCache;
+	_fsCache: FsCache;
+	partialsDir: string|PartialsDirObject|(string|PartialsDirObject)[];
+	compilerOptions: CompileOptions;
+	runtimeOptions: RuntimeOptions;
+	helpers: FunctionObject;
+	defaultLayout: string;
+	handlebars: HandlebarsImport;
+
+	constructor (config: ConfigOptions = {}) {
 		// Config properties with defaults.
 		Object.assign(this, defaultConfig, config);
 
@@ -49,17 +84,17 @@ class ExpressHandlebars {
 		this._fsCache = {};
 	}
 
-	async getPartials (options) {
+	async getPartials (options: PartialTemplateOptions = {}): Promise<TemplateSpecificationObject|TemplateDelegateObject> {
 		if (typeof this.partialsDir === "undefined") {
 			return {};
 		}
 		const partialsDirs = Array.isArray(this.partialsDir) ? this.partialsDir : [this.partialsDir];
 
 		const dirs = await Promise.all(partialsDirs.map(async dir => {
-			let dirPath;
-			let dirTemplates;
-			let dirNamespace;
-			let dirRename;
+			let dirPath: string;
+			let dirTemplates: TemplateDelegateObject;
+			let dirNamespace: string;
+			let dirRename: RenameFunction;
 
 			// Support `partialsDir` collection with object entries that contain a
 			// templates promise and a namespace.
@@ -77,16 +112,16 @@ class ExpressHandlebars {
 				throw new Error("A partials dir must be a string or config object");
 			}
 
-			const templates = dirTemplates || await this.getTemplates(dirPath, options);
+			const templates: HandlebarsTemplateDelegate|TemplateSpecification = dirTemplates || await this.getTemplates(dirPath, options);
 
 			return {
-				templates,
+				templates: templates as HandlebarsTemplateDelegate|TemplateSpecification,
 				namespace: dirNamespace,
 				rename: dirRename,
 			};
 		}));
 
-		const partials = {};
+		const partials: TemplateDelegateObject|TemplateSpecificationObject = {};
 
 		for (const dir of dirs) {
 			const { templates, namespace, rename } = dir;
@@ -105,12 +140,12 @@ class ExpressHandlebars {
 		return partials;
 	}
 
-	async getTemplate (filePath, options = {}) {
+	async getTemplate (filePath: string, options: PartialTemplateOptions = {}): Promise<HandlebarsTemplateDelegate|TemplateSpecification> {
 		filePath = path.resolve(filePath);
 
 		const encoding = options.encoding || this.encoding;
-		const cache = options.precompiled ? this.precompiled : this.compiled;
-		let template = options.cache && cache[filePath];
+		const cache: PrecompiledCache|CompiledCache = options.precompiled ? this.precompiled : this.compiled;
+		const template: Promise<HandlebarsTemplateDelegate|TemplateSpecification> = options.cache && cache[filePath];
 
 		if (template) {
 			return template;
@@ -120,19 +155,18 @@ class ExpressHandlebars {
 		// remove from cache if there was a problem.
 		try {
 			cache[filePath] = this._getFile(filePath, { cache: options.cache, encoding })
-				.then(file => {
-					const compileTemplate = (options.precompiled ? this._precompileTemplate : this._compileTemplate).bind(this);
+				.then((file: string) => {
+					const compileTemplate: (file: string, options: RuntimeOptions) => TemplateSpecification|HandlebarsTemplateDelegate = (options.precompiled ? this._precompileTemplate : this._compileTemplate).bind(this);
 					return compileTemplate(file, this.compilerOptions);
 				});
-			template = await cache[filePath];
-			return template;
+			return await cache[filePath];
 		} catch (err) {
 			delete cache[filePath];
 			throw err;
 		}
 	}
 
-	async getTemplates (dirPath, options = {}) {
+	async getTemplates (dirPath: string, options: PartialTemplateOptions = {}): Promise<HandlebarsTemplateDelegate|TemplateSpecification> {
 		const cache = options.cache;
 
 		const filePaths = await this._getDir(dirPath, { cache });
@@ -147,13 +181,13 @@ class ExpressHandlebars {
 		return hash;
 	}
 
-	async render (filePath, context, options = {}) {
+	async render (filePath: string, context: UnknownObject = {}, options: RenderOptions = {}): Promise<string> {
 		const encoding = options.encoding || this.encoding;
 		const [template, partials] = await Promise.all([
-			this.getTemplate(filePath, { cache: options.cache, encoding }),
-			options.partials || this.getPartials({ cache: options.cache, encoding }),
+			this.getTemplate(filePath, { cache: options.cache, encoding }) as Promise<HandlebarsTemplateDelegate>,
+			(options.partials || this.getPartials({ cache: options.cache, encoding })) as Promise<TemplateDelegateObject>,
 		]);
-		const helpers = { ...this.helpers, ...options.helpers };
+		const helpers: FunctionObject = { ...this.helpers, ...options.helpers };
 		const runtimeOptions = { ...this.runtimeOptions, ...options.runtimeOptions };
 
 		// Add ExpressHandlebars metadata to the data channel so that it's
@@ -180,10 +214,19 @@ class ExpressHandlebars {
 		return html;
 	}
 
-	async renderView (viewPath, options = {}, callback = null) {
-		const context = options;
+	async renderView (viewPath: string): Promise<string>;
+	async renderView (viewPath: string, options: RenderViewOptions): Promise<string>;
+	async renderView (viewPath: string, callback: RenderCallback): Promise<null>;
+	async renderView (viewPath: string, options: RenderViewOptions, callback: RenderCallback): Promise<null>;
+	async renderView (viewPath: string, options: RenderViewOptions|RenderCallback = {}, callback: RenderCallback|null = null): Promise<string|null> {
+		if (typeof options === "function") {
+			callback = options;
+			options = {};
+		}
 
-		let promise;
+		const context = options as UnknownObject;
+
+		let promise: Promise<string>|null = null;
 		if (!callback) {
 			promise = new Promise((resolve, reject) => {
 				callback = (err, value) => { err !== null ? reject(err) : resolve(value); };
@@ -194,7 +237,7 @@ class ExpressHandlebars {
 		// the developer set on the Express app. When this value exists, it's used
 		// to compute the view's name. Layouts and Partials directories are relative
 		// to `settings.view` path
-		let view;
+		let view: string;
 		const views = options.settings && options.settings.views;
 		const viewsPath = this._resolveViewsPath(views, viewPath);
 		if (viewsPath) {
@@ -209,9 +252,9 @@ class ExpressHandlebars {
 		const helpers = { ...this.helpers, ...options.helpers };
 
 		// Merge render-level and instance-level partials together.
-		const partials = {
-			...await this.getPartials({ cache: options.cache, encoding }),
-			...await (options.partials || {}),
+		const partials: TemplateDelegateObject = {
+			...await this.getPartials({ cache: options.cache, encoding }) as TemplateDelegateObject,
+			...(options.partials || {}),
 		};
 
 		// Pluck-out ExpressHandlebars-specific options and Handlebars-specific
@@ -221,7 +264,6 @@ class ExpressHandlebars {
 			encoding,
 			view,
 			layout: "layout" in options ? options.layout : this.defaultLayout,
-
 			data: options.data,
 			helpers,
 			partials,
@@ -249,29 +291,28 @@ class ExpressHandlebars {
 
 	// -- Protected Hooks ----------------------------------------------------------
 
-	_compileTemplate (template, options) {
+	protected _compileTemplate (template: string, options: RuntimeOptions = {}): HandlebarsTemplateDelegate {
 		return this.handlebars.compile(template.trim(), options);
 	}
 
-	_precompileTemplate (template, options) {
+	protected _precompileTemplate (template: string, options: RuntimeOptions = {}): TemplateSpecification {
 		return this.handlebars.precompile(template.trim(), options);
 	}
 
-	_renderTemplate (template, context, options) {
+	protected _renderTemplate (template: HandlebarsTemplateDelegate, context: UnknownObject = {}, options: RuntimeOptions = {}): string {
 		return template(context, options).trim();
 	}
 
 	// -- Private ------------------------------------------------------------------
 
-	async _getDir (dirPath, options = {}) {
+	private async _getDir (dirPath: string, options: PartialTemplateOptions = {}): Promise<string[]> {
 		dirPath = path.resolve(dirPath);
 
 		const cache = this._fsCache;
-		let dir = options.cache && cache[dirPath];
+		let dir = options.cache && (cache[dirPath] as Promise<string[]>);
 
 		if (dir) {
-			dir = await dir;
-			return dir.concat();
+			return (await dir).concat();
 		}
 
 		const pattern = "**/*" + this.extname;
@@ -284,24 +325,23 @@ class ExpressHandlebars {
 				cwd: dirPath,
 				follow: true,
 			});
+			// @ts-ignore FIXME: not sure how to throw error in glob for test coverage
 			if (options._throwTestError) {
-				// FIXME: not sure how to throw error in glob for test coverage
 				throw new Error("test");
 			}
-			dir = await dir;
-			return dir.concat();
+			return (await dir).concat();
 		} catch (err) {
 			delete cache[dirPath];
 			throw err;
-		};
+		}
 	}
 
-	async _getFile (filePath, options = {}) {
+	private async _getFile (filePath: string, options: PartialTemplateOptions = {}): Promise<string> {
 		filePath = path.resolve(filePath);
 
 		const cache = this._fsCache;
 		const encoding = options.encoding || this.encoding;
-		let file = options.cache && cache[filePath];
+		const file = options.cache && (cache[filePath] as Promise<string>);
 
 		if (file) {
 			return file;
@@ -310,16 +350,15 @@ class ExpressHandlebars {
 		// Optimistically cache file promise to reduce file system I/O, but remove
 		// from cache if there was a problem.
 		try {
-			cache[filePath] = readFile(filePath, encoding || "utf8");
-			file = await cache[filePath];
-			return file;
+			cache[filePath] = readFile(filePath, { encoding: encoding || "utf8" });
+			return await cache[filePath] as string;
 		} catch (err) {
 			delete cache[filePath];
 			throw err;
-		};
+		}
 	}
 
-	_getTemplateName (filePath, namespace) {
+	private _getTemplateName (filePath: string, namespace: string = null): string {
 		let name = filePath;
 
 		if (name.endsWith(this.extname)) {
@@ -333,7 +372,7 @@ class ExpressHandlebars {
 		return name;
 	}
 
-	_resolveViewsPath (views, file) {
+	private _resolveViewsPath (views: string|string[], file: string): string|null {
 		if (!Array.isArray(views)) {
 			return views;
 		}
@@ -356,7 +395,7 @@ class ExpressHandlebars {
 		return null;
 	}
 
-	_resolveLayoutPath (layoutPath) {
+	private _resolveLayoutPath (layoutPath: string): string|null {
 		if (!layoutPath) {
 			return null;
 		}
@@ -368,5 +407,3 @@ class ExpressHandlebars {
 		return path.resolve(this.layoutsDir || "", layoutPath);
 	}
 }
-
-module.exports = ExpressHandlebars;

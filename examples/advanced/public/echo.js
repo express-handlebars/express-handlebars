@@ -7,7 +7,7 @@
 (function () {
 	const button = document.getElementById("say");
 
-	button.addEventListener("click", function (e) {
+	button.addEventListener("click", () => {
 		const message = prompt("Say Something:", "Yo yo");
 		const echo = document.createElement("div");
 

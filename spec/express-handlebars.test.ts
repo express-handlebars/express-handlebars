@@ -1,11 +1,23 @@
-const path = require("path");
-const expressHandlebars = require("../");
+import * as path from "path";
+import expressHandlebars from "../lib/index";
+import {
+	TemplateDelegateObject,
+} from "../lib/types";
 
 function fixturePath (filePath = "") {
 	return path.resolve(__dirname, "./fixtures", filePath);
 }
 
+// allow access to private functions for testing
+// https://github.com/microsoft/TypeScript/issues/19335
+/* eslint-disable dot-notation, @typescript-eslint/no-empty-function */
+
 describe("express-handlebars", () => {
+	test("ExpressHandlebars instance", () => {
+		const exphbs = new expressHandlebars.ExpressHandlebars();
+		expect(exphbs).toBeDefined();
+	});
+
 	test("should nomalize extname", () => {
 		const exphbs1 = expressHandlebars.create({ extname: "ext" });
 		const exphbs2 = expressHandlebars.create({ extname: ".ext" });
@@ -15,8 +27,9 @@ describe("express-handlebars", () => {
 
 	describe("getPartials", () => {
 		test("should throw if partialsDir is not correct type", async () => {
+			// @ts-expect-error partialsDir is invalid
 			const exphbs = expressHandlebars.create({ partialsDir: 1 });
-			let error;
+			let error: Error;
 			try {
 				await exphbs.getPartials();
 			} catch (e) {
@@ -100,15 +113,15 @@ describe("express-handlebars", () => {
 
 		test("should return template function", async () => {
 			const exphbs = expressHandlebars.create({ partialsDir: "spec/fixtures/partials" });
-			const partials = await exphbs.getPartials();
+			const partials = await exphbs.getPartials() as TemplateDelegateObject;
 			const html = partials.partial({ text: "test text" });
 			expect(html).toBe("partial test text");
 		});
 
 		test("should return a template with encoding", async () => {
 			const exphbs = expressHandlebars.create({ partialsDir: "spec/fixtures/partials" });
-			const partials = await exphbs.getPartials({ encoding: "latin1" });
-			const html = partials["partial-latin1"]();
+			const partials = await exphbs.getPartials({ encoding: "latin1" }) as TemplateDelegateObject;
+			const html = partials["partial-latin1"]({});
 			expect(html).toContain("ñáéíóú");
 		});
 
@@ -117,8 +130,8 @@ describe("express-handlebars", () => {
 				encoding: "latin1",
 				partialsDir: "spec/fixtures/partials",
 			});
-			const partials = await exphbs.getPartials();
-			const html = partials["partial-latin1"]();
+			const partials = await exphbs.getPartials() as TemplateDelegateObject;
+			const html = partials["partial-latin1"]({});
 			expect(html).toContain("ñáéíóú");
 		});
 	});
@@ -127,10 +140,10 @@ describe("express-handlebars", () => {
 		test("should return cached template", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("templates/template.handlebars");
-			const compiledCachedFunction = Symbol("compiledCachedFunction");
-			exphbs.compiled[filePath] = compiledCachedFunction;
-			const precompiledCachedFunction = Symbol("precompiledCachedFunction");
-			exphbs.precompiled[filePath] = precompiledCachedFunction;
+			const compiledCachedFunction = (() => "compiled") as Handlebars.TemplateDelegate;
+			exphbs.compiled[filePath] = Promise.resolve(compiledCachedFunction);
+			const precompiledCachedFunction = (() => "precompiled") as TemplateSpecification;
+			exphbs.precompiled[filePath] = Promise.resolve(precompiledCachedFunction);
 			const template = await exphbs.getTemplate(filePath, { cache: true });
 			expect(template).toBe(compiledCachedFunction);
 		});
@@ -138,10 +151,10 @@ describe("express-handlebars", () => {
 		test("should return precompiled cached template", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("templates/template.handlebars");
-			const compiledCachedFunction = Symbol("compiledCachedFunction");
-			exphbs.compiled[filePath] = compiledCachedFunction;
-			const precompiledCachedFunction = Symbol("precompiledCachedFunction");
-			exphbs.precompiled[filePath] = precompiledCachedFunction;
+			const compiledCachedFunction = (() => "compiled") as Handlebars.TemplateDelegate;
+			exphbs.compiled[filePath] = Promise.resolve(compiledCachedFunction);
+			const precompiledCachedFunction = (() => "precompiled") as TemplateSpecification;
+			exphbs.precompiled[filePath] = Promise.resolve(precompiledCachedFunction);
 			const template = await exphbs.getTemplate(filePath, { precompiled: true, cache: true });
 			expect(template).toBe(precompiledCachedFunction);
 		});
@@ -169,7 +182,7 @@ describe("express-handlebars", () => {
 		test("should return a template", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("templates/template.handlebars");
-			const template = await exphbs.getTemplate(filePath);
+			const template = await exphbs.getTemplate(filePath) as HandlebarsTemplateDelegate;
 			const html = template({ text: "test text" });
 			expect(html).toBe("<p>test text</p>");
 		});
@@ -177,16 +190,16 @@ describe("express-handlebars", () => {
 		test("should return a template with encoding", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("templates/template-latin1.handlebars");
-			const template = await exphbs.getTemplate(filePath, { encoding: "latin1" });
-			const html = template();
+			const template = await exphbs.getTemplate(filePath, { encoding: "latin1" }) as HandlebarsTemplateDelegate;
+			const html = template({});
 			expect(html).toContain("ñáéíóú");
 		});
 
 		test("should return a template with default encoding", async () => {
 			const exphbs = expressHandlebars.create({ encoding: "latin1" });
 			const filePath = fixturePath("templates/template-latin1.handlebars");
-			const template = await exphbs.getTemplate(filePath);
-			const html = template();
+			const template = await exphbs.getTemplate(filePath) as HandlebarsTemplateDelegate;
+			const html = template({});
 			expect(html).toContain("ñáéíóú");
 		});
 
@@ -194,7 +207,7 @@ describe("express-handlebars", () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = "does-not-exist";
 			expect(exphbs.compiled[filePath]).toBeUndefined();
-			let error;
+			let error: Error;
 			try {
 				await exphbs.getTemplate(filePath);
 			} catch (e) {
@@ -239,7 +252,7 @@ describe("express-handlebars", () => {
 		test("should return cached templates", async () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("render-cached.handlebars");
-			exphbs.compiled[filePath] = () => "cached";
+			exphbs.compiled[filePath] = Promise.resolve(() => "cached");
 			const html = await exphbs.render(filePath, null, { cache: true });
 			expect(html).toBe("cached");
 		});
@@ -264,7 +277,7 @@ describe("express-handlebars", () => {
 			const filePath = fixturePath("render-helper.handlebars");
 			const html = await exphbs.render(filePath, { text: "test text" }, {
 				helpers: {
-					help: (text) => text,
+					help: (text: string) => text,
 				},
 			});
 			expect(html).toBe("<p>test text</p>");
@@ -309,44 +322,44 @@ describe("express-handlebars", () => {
 
 		test("should render with runtimeOptions", async () => {
 			const exphbs = expressHandlebars.create({
-				runtimeOptions: { runtimeOptionTest: "test" },
+				runtimeOptions: { allowProtoPropertiesByDefault: true },
 			});
 			const filePath = fixturePath("test");
-			const spy = jest.fn(() => { return "test"; });
-			exphbs.compiled[filePath] = spy;
+			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
+			exphbs.compiled[filePath] = Promise.resolve(spy);
 			await exphbs.render(filePath, null, { cache: true });
-			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test" }));
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ allowProtoPropertiesByDefault: true }));
 		});
 
 		test("should override runtimeOptions", async () => {
 			const exphbs = expressHandlebars.create({
-				runtimeOptions: { runtimeOptionTest: "test" },
+				runtimeOptions: { allowProtoPropertiesByDefault: true },
 			});
 			const filePath = fixturePath("test");
-			const spy = jest.fn(() => { return "test"; });
-			exphbs.compiled[filePath] = spy;
+			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
+			exphbs.compiled[filePath] = Promise.resolve(spy);
 			await exphbs.render(filePath, null, {
 				cache: true,
-				runtimeOptions: { runtimeOptionTest: "test2" },
+				runtimeOptions: { allowProtoPropertiesByDefault: false },
 			});
-			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test2" }));
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ allowProtoPropertiesByDefault: false }));
 		});
 	});
 
 	describe("engine", () => {
 		test("should call renderView", async () => {
-			const arr = Array(100).fill(0).map((_, i) => i);
-			jest.spyOn(expressHandlebars.ExpressHandlebars.prototype, "renderView").mockImplementation(() => {});
+			jest.spyOn(expressHandlebars.ExpressHandlebars.prototype, "renderView").mockImplementation(() => Promise.resolve(null));
 			const exphbs = expressHandlebars.create();
-			exphbs.engine(...arr);
-			expect(expressHandlebars.ExpressHandlebars.prototype.renderView).toHaveBeenCalledWith(...arr);
+			const cb = () => { /* empty */ };
+			exphbs.engine("view", {}, cb);
+			expect(expressHandlebars.ExpressHandlebars.prototype.renderView).toHaveBeenCalledWith("view", {}, cb);
 		});
 
 		test("should call engine", async () => {
-			const arr = Array(100).fill(0).map((_, i) => i);
-			jest.spyOn(expressHandlebars.ExpressHandlebars.prototype, "renderView").mockImplementation(() => {});
-			expressHandlebars()(...arr);
-			expect(expressHandlebars.ExpressHandlebars.prototype.renderView).toHaveBeenCalledWith(...arr);
+			jest.spyOn(expressHandlebars.ExpressHandlebars.prototype, "renderView").mockImplementation(() => Promise.resolve(null));
+			const cb = () => { /* empty */ };
+			expressHandlebars()("view", {}, cb);
+			expect(expressHandlebars.ExpressHandlebars.prototype.renderView).toHaveBeenCalledWith("view", {}, cb);
 		});
 
 		test("should render html", async () => {
@@ -433,7 +446,7 @@ describe("express-handlebars", () => {
 			const html = await exphbs.renderView(viewPath, {
 				text: "test text",
 				helpers: {
-					help: (text) => text,
+					help: (text: string) => text,
 				},
 			});
 			expect(html).toBe("<p>test text</p>");
@@ -487,9 +500,19 @@ describe("express-handlebars", () => {
 		test("should call callback with html", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, { text: "test text" }, (err, html) => {
+			exphbs.renderView(viewPath, { text: "test text" }, (err: Error|null, html: string) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p>test text</p>");
+				done();
+			});
+		});
+
+		test("should call callback as second parameter", (done) => {
+			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const viewPath = fixturePath("render-text.handlebars");
+			exphbs.renderView(viewPath, (err: Error|null, html: string) => {
+				expect(err).toBe(null);
+				expect(html).toBe("<p></p>");
 				done();
 			});
 		});
@@ -497,7 +520,7 @@ describe("express-handlebars", () => {
 		test("should call callback with error", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const viewPath = "does-not-exist";
-			exphbs.renderView(viewPath, {}, (err, html) => {
+			exphbs.renderView(viewPath, {}, (err: Error|null, html: string) => {
 				expect(err.message).toEqual(expect.stringContaining("no such file or directory"));
 				expect(html).toBeUndefined();
 				done();
@@ -507,7 +530,7 @@ describe("express-handlebars", () => {
 		test("should reject with error", async () => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const viewPath = "does-not-exist";
-			let error;
+			let error: Error;
 			try {
 				await exphbs.renderView(viewPath);
 			} catch (e) {
@@ -519,13 +542,13 @@ describe("express-handlebars", () => {
 		test("should use runtimeOptions", async () => {
 			const exphbs = expressHandlebars.create({ defaultLayout: null });
 			const filePath = fixturePath("test");
-			const spy = jest.fn(() => { return "test"; });
-			exphbs.compiled[filePath] = spy;
+			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
+			exphbs.compiled[filePath] = Promise.resolve(spy);
 			await exphbs.renderView(filePath, {
 				cache: true,
-				runtimeOptions: { runtimeOptionTest: "test" },
+				runtimeOptions: { allowProtoPropertiesByDefault: true },
 			});
-			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ runtimeOptionTest: "test" }));
+			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ allowProtoPropertiesByDefault: true }));
 		});
 	});
 
@@ -533,19 +556,21 @@ describe("express-handlebars", () => {
 		describe("_compileTemplate", () => {
 			test("should call template with context and options", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error empty function
 				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
 				const template = "template";
 				const options = {};
-				exphbs._compileTemplate(template, options);
+				exphbs["_compileTemplate"](template, options);
 				expect(exphbs.handlebars.compile).toHaveBeenCalledWith(template, options);
 			});
 
 			test("should trim template", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error empty function
 				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
 				const template = " template\n";
 				const options = {};
-				exphbs._compileTemplate(template, options);
+				exphbs["_compileTemplate"](template, options);
 				expect(exphbs.handlebars.compile).toHaveBeenCalledWith("template", options);
 			});
 		});
@@ -553,19 +578,21 @@ describe("express-handlebars", () => {
 		describe("_precompileTemplate", () => {
 			test("should call template with context and options", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error empty function
 				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
 				const template = "template";
 				const options = {};
-				exphbs._precompileTemplate(template, options);
+				exphbs["_precompileTemplate"](template, options);
 				expect(exphbs.handlebars.precompile).toHaveBeenCalledWith(template, options);
 			});
 
 			test("should trim template", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error empty function
 				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
 				const template = " template\n";
 				const options = {};
-				exphbs._precompileTemplate(template, options);
+				exphbs["_precompileTemplate"](template, options);
 				expect(exphbs.handlebars.precompile).toHaveBeenCalledWith("template", options);
 			});
 		});
@@ -576,14 +603,14 @@ describe("express-handlebars", () => {
 				const template = jest.fn(() => "");
 				const context = {};
 				const options = {};
-				exphbs._renderTemplate(template, context, options);
+				exphbs["_renderTemplate"](template, context, options);
 				expect(template).toHaveBeenCalledWith(context, options);
 			});
 
 			test("should trim html", () => {
 				const exphbs = expressHandlebars.create();
 				const template = () => " \n";
-				const html = exphbs._renderTemplate(template);
+				const html = exphbs["_renderTemplate"](template);
 				expect(html).toBe("");
 			});
 		});
@@ -593,7 +620,7 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("test");
 				exphbs._fsCache[filePath] = "test";
-				const file = await exphbs._getDir(filePath, { cache: true });
+				const file = await exphbs["_getDir"](filePath, { cache: true });
 				expect(file).toBe("test");
 			});
 
@@ -601,7 +628,7 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("templates");
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				await exphbs._getDir(filePath);
+				await exphbs["_getDir"](filePath);
 				expect(exphbs._fsCache[filePath]).toBeDefined();
 			});
 
@@ -609,9 +636,12 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = "test";
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				let error;
+				let error: Error;
 				try {
-					await exphbs._getDir(filePath, { _throwTestError: true });
+					await exphbs["_getDir"](filePath, {
+						// @ts-expect-error Add this just for testing
+						_throwTestError: true,
+					});
 				} catch (e) {
 					error = e;
 				}
@@ -625,7 +655,7 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("test");
 				exphbs._fsCache[filePath] = "test";
-				const file = await exphbs._getFile(filePath, { cache: true });
+				const file = await exphbs["_getFile"](filePath, { cache: true });
 				expect(file).toBe("test");
 			});
 
@@ -633,7 +663,7 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("render-text.handlebars");
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				await exphbs._getFile(filePath);
+				await exphbs["_getFile"](filePath);
 				expect(exphbs._fsCache[filePath]).toBeDefined();
 			});
 
@@ -641,9 +671,9 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = "does-not-exist";
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				let error;
+				let error: Error;
 				try {
-					await exphbs._getFile(filePath);
+					await exphbs["_getFile"](filePath);
 				} catch (e) {
 					error = e;
 				}
@@ -654,28 +684,28 @@ describe("express-handlebars", () => {
 			test("should read as utf8", async () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("render-text.handlebars");
-				const text = await exphbs._getFile(filePath);
+				const text = await exphbs["_getFile"](filePath);
 				expect(text.trim()).toBe("<p>{{text}}</p>");
 			});
 
 			test("should read as utf8 by default", async () => {
 				const exphbs = expressHandlebars.create({ encoding: null });
 				const filePath = fixturePath("render-text.handlebars");
-				const text = await exphbs._getFile(filePath);
+				const text = await exphbs["_getFile"](filePath);
 				expect(text.trim()).toBe("<p>{{text}}</p>");
 			});
 
 			test("should read as latin1", async () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("render-latin1.handlebars");
-				const text = await exphbs._getFile(filePath, { encoding: "latin1" });
+				const text = await exphbs["_getFile"](filePath, { encoding: "latin1" });
 				expect(text).toContain("ñáéíóú");
 			});
 
 			test("should read as default encoding", async () => {
 				const exphbs = expressHandlebars.create({ encoding: "latin1" });
 				const filePath = fixturePath("render-latin1.handlebars");
-				const text = await exphbs._getFile(filePath);
+				const text = await exphbs["_getFile"](filePath);
 				expect(text).toContain("ñáéíóú");
 			});
 		});
@@ -683,19 +713,19 @@ describe("express-handlebars", () => {
 		describe("_getTemplateName", () => {
 			test("should remove extension", () => {
 				const exphbs = expressHandlebars.create();
-				const name = exphbs._getTemplateName("filePath.handlebars");
+				const name = exphbs["_getTemplateName"]("filePath.handlebars");
 				expect(name).toBe("filePath");
 			});
 
 			test("should leave if no extension", () => {
 				const exphbs = expressHandlebars.create();
-				const name = exphbs._getTemplateName("filePath");
+				const name = exphbs["_getTemplateName"]("filePath");
 				expect(name).toBe("filePath");
 			});
 
 			test("should add namespace", () => {
 				const exphbs = expressHandlebars.create();
-				const name = exphbs._getTemplateName("filePath.handlebars", "namespace");
+				const name = exphbs["_getTemplateName"]("filePath.handlebars", "namespace");
 				expect(name).toBe("namespace/filePath");
 			});
 		});
@@ -704,7 +734,7 @@ describe("express-handlebars", () => {
 			test("should return closest parent", () => {
 				const file = "/root/views/file.hbs";
 				const exphbs = expressHandlebars.create();
-				const viewsPath = exphbs._resolveViewsPath([
+				const viewsPath = exphbs["_resolveViewsPath"]([
 					"/root",
 					"/root/views",
 					"/root/views/file",
@@ -714,20 +744,20 @@ describe("express-handlebars", () => {
 
 			test("should return string views", () => {
 				const exphbs = expressHandlebars.create();
-				const viewsPath = exphbs._resolveViewsPath("./views", "filePath.hbs");
+				const viewsPath = exphbs["_resolveViewsPath"]("./views", "filePath.hbs");
 				expect(viewsPath).toBe("./views");
 			});
 
 			test("should return null views", () => {
 				const exphbs = expressHandlebars.create();
-				const viewsPath = exphbs._resolveViewsPath(null, "filePath.hbs");
+				const viewsPath = exphbs["_resolveViewsPath"](null, "filePath.hbs");
 				expect(viewsPath).toBe(null);
 			});
 
 			test("should return null if not found", () => {
 				const file = "/file.hbs";
 				const exphbs = expressHandlebars.create();
-				const viewsPath = exphbs._resolveViewsPath([
+				const viewsPath = exphbs["_resolveViewsPath"]([
 					"/views",
 				], file);
 				expect(viewsPath).toBe(null);
@@ -737,7 +767,7 @@ describe("express-handlebars", () => {
 		describe("_resolveLayoutPath", () => {
 			test("should add extension", () => {
 				const exphbs = expressHandlebars.create();
-				const layoutPath = exphbs._resolveLayoutPath("filePath");
+				const layoutPath = exphbs["_resolveLayoutPath"]("filePath");
 				expect(layoutPath).toEqual(expect.stringMatching(/filePath\.handlebars$/));
 			});
 
@@ -745,13 +775,13 @@ describe("express-handlebars", () => {
 				const layoutsDir = fixturePath("layouts");
 				const filePath = "filePath.handlebars";
 				const exphbs = expressHandlebars.create({ layoutsDir });
-				const layoutPath = exphbs._resolveLayoutPath(filePath);
+				const layoutPath = exphbs["_resolveLayoutPath"](filePath);
 				expect(layoutPath).toBe(path.resolve(layoutsDir, filePath));
 			});
 
 			test("should return null", () => {
 				const exphbs = expressHandlebars.create();
-				const layoutPath = exphbs._resolveLayoutPath(null);
+				const layoutPath = exphbs["_resolveLayoutPath"](null);
 				expect(layoutPath).toBe(null);
 			});
 		});
