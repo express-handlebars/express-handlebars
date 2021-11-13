@@ -1,3 +1,12 @@
+## [6.0.1](https://github.com/express-handlebars/express-handlebars/compare/v6.0.0...v6.0.1) (2021-11-13)
+
+
+### Bug Fixes
+
+* fix types ([f4de857](https://github.com/express-handlebars/express-handlebars/commit/f4de8577d5ad4510f4c5286cdee300dd27c6abfc))
+* remove default export ([a7f38a1](https://github.com/express-handlebars/express-handlebars/commit/a7f38a1d3127d63450b10b3f3539e3ce8131b677))
+* update examples ([1b1f5f7](https://github.com/express-handlebars/express-handlebars/commit/1b1f5f7b818985d433f6dc0398f7866c62b6cdea))
+
 # [6.0.0](https://github.com/express-handlebars/express-handlebars/compare/v5.3.5...v6.0.0) (2021-11-13)
 
 
