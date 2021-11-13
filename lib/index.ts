@@ -8,17 +8,14 @@ import ExpressHandlebars from "./express-handlebars";
 import type {
 	ConfigOptions,
 	Engine,
-} from "./types";
+} from "../types";
 
-export * from "./types";
 export { ExpressHandlebars };
 
 export function create (config: ConfigOptions = {}): ExpressHandlebars {
 	return new ExpressHandlebars(config);
 }
 
-export default function exphbs (config: ConfigOptions = {}): Engine {
+export function engine (config: ConfigOptions = {}): Engine {
 	return create(config).engine;
 }
-exphbs.create = create;
-exphbs.ExpressHandlebars = ExpressHandlebars;

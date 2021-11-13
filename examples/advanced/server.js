@@ -1,15 +1,15 @@
-"use strict";
+import express from "express";
+import { create } from "../../dist/index.js"; // "express-handlebars"
+import * as helpers from "./lib/helpers.js";
 
-const Promise = global.Promise || require("promise");
-
-const express = require("express");
-const exphbs = require("../../"); // "express-handlebars"
-const helpers = require("./lib/helpers");
+import * as path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
 // Create `ExpressHandlebars` instance with a default layout.
-const hbs = exphbs.create({
+const hbs = create({
 	helpers,
 
 	// Uses multiple partials dirs, templates in "shared/templates/" are shared
@@ -23,6 +23,7 @@ const hbs = exphbs.create({
 // Register `hbs` as our view engine using its bound `engine()` function.
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+app.set("views", path.resolve(__dirname, "./views"));
 
 // Middleware to expose the app's shared templates to the client-side of the app
 // for pages which need them.
@@ -32,13 +33,13 @@ function exposeTemplates (req, res, next) {
 	hbs.getTemplates("shared/templates/", {
 		cache: app.enabled("view cache"),
 		precompiled: true,
-	}).then(function (templates) {
+	}).then((templates) => {
 		// RegExp to remove the ".handlebars" extension from the template names.
 		const extRegex = new RegExp(hbs.extname + "$");
 
 		// Creates an array of templates which are exposed via
 		// `res.locals.templates`.
-		templates = Object.keys(templates).map(function (name) {
+		templates = Object.keys(templates).map((name) => {
 			return {
 				name: name.replace(extRegex, ""),
 				template: templates[name],
@@ -55,13 +56,13 @@ function exposeTemplates (req, res, next) {
 		.catch(next);
 }
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
 	res.render("home", {
 		title: "Home",
 	});
 });
 
-app.get("/yell", function (req, res) {
+app.get("/yell", (req, res) => {
 	res.render("yell", {
 		title: "Yell",
 
@@ -70,7 +71,7 @@ app.get("/yell", function (req, res) {
 	});
 });
 
-app.get("/exclaim", function (req, res) {
+app.get("/exclaim", (req, res) => {
 	res.render("yell", {
 		title: "Exclaim",
 		message: "hello world",
@@ -84,7 +85,7 @@ app.get("/exclaim", function (req, res) {
 	});
 });
 
-app.get("/echo/:message?", exposeTemplates, function (req, res) {
+app.get("/echo/:message?", exposeTemplates, (req, res) => {
 	res.render("echo", {
 		title: "Echo",
 		message: req.params.message,
@@ -100,6 +101,6 @@ app.get("/echo/:message?", exposeTemplates, function (req, res) {
 
 app.use(express.static("public/"));
 
-app.listen(3000, function () {
+app.listen(3000, () => {
 	console.log("express-handlebars example server listening on: 3000");
 });
