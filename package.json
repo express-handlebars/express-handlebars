@@ -24,8 +24,8 @@
     "node": ">=v10.24.1"
   },
   "dependencies": {
-    "glob": "^7.1.6",
-    "graceful-fs": "^4.2.6",
+    "glob": "^7.2.0",
+    "graceful-fs": "^4.2.8",
     "handlebars": "^4.7.7"
   },
   "main": "index.js",
@@ -33,19 +33,19 @@
     "example": "examples"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@semantic-release/github": "^7.2.1",
-    "@semantic-release/npm": "^7.1.1",
-    "@semantic-release/release-notes-generator": "^9.0.2",
-    "eslint": "^7.25.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^8.0.3",
+    "@semantic-release/release-notes-generator": "^10.0.2",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "jest-cli": "^26.6.3",
-    "semantic-release": "^17.4.2"
+    "eslint-plugin-promise": "^5.1.1",
+    "jest-cli": "^27.3.1",
+    "semantic-release": "^18.0.0"
   },
   "release": {
     "plugins": [
