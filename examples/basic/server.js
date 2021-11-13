@@ -1,17 +1,20 @@
-"use strict";
+import express from "express";
+import { engine } from "../../dist/index.js"; // "express-handlebars"
 
-const express = require("express");
-const exphbs = require("../../"); // "express-handlebars"
+import * as path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
-app.engine("handlebars", exphbs());
+app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
+app.set("views", path.resolve(__dirname, "./views"));
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
 	res.render("home");
 });
 
-app.listen(3000, function () {
+app.listen(3000, () => {
 	console.log("express-handlebars example server listening on: 3000");
 });

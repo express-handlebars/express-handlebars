@@ -1,5 +1,3 @@
-"use strict";
-
-exports.yell = function (msg) {
+export function yell (msg) {
 	return msg.toUpperCase();
-};
+}
