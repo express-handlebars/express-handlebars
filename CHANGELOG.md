@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/express-handlebars/express-handlebars/compare/v5.3.5...v6.0.0) (2021-11-13)
+
+
+### Features
+
+* rewrite in typescript ([188d3c4](https://github.com/express-handlebars/express-handlebars/commit/188d3c48526499143b7e1787accd230150a200d3))
+
+
+### BREAKING CHANGES
+
+* Change minimum node version to 12
+
 ## [5.3.5](https://github.com/express-handlebars/express-handlebars/compare/v5.3.4...v5.3.5) (2021-11-13)
 
 
