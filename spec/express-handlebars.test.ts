@@ -1,5 +1,5 @@
 import * as path from "path";
-import expressHandlebars from "../lib/index";
+import * as expressHandlebars from "../lib/index";
 import type {
 	TemplateDelegateObject,
 } from "../types";
@@ -358,12 +358,12 @@ describe("express-handlebars", () => {
 		test("should call engine", async () => {
 			jest.spyOn(expressHandlebars.ExpressHandlebars.prototype, "renderView").mockImplementation(() => Promise.resolve(null));
 			const cb = () => { /* empty */ };
-			expressHandlebars()("view", {}, cb);
+			expressHandlebars.engine()("view", {}, cb);
 			expect(expressHandlebars.ExpressHandlebars.prototype.renderView).toHaveBeenCalledWith("view", {}, cb);
 		});
 
 		test("should render html", async () => {
-			const renderView = expressHandlebars({ defaultLayout: null });
+			const renderView = expressHandlebars.engine({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await renderView(viewPath, { text: "test text" });
 			expect(html).toBe("<p>test text</p>");
