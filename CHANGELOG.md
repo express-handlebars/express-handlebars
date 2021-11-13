@@ -1,3 +1,10 @@
+## [5.3.5](https://github.com/express-handlebars/express-handlebars/compare/v5.3.4...v5.3.5) (2021-11-13)
+
+
+### Bug Fixes
+
+* update deps ([b516cff](https://github.com/express-handlebars/express-handlebars/commit/b516cff30ba3de90db02b3a3682c9ffbcfb10091))
+
 ## [5.3.4](https://github.com/express-handlebars/express-handlebars/compare/v5.3.3...v5.3.4) (2021-09-23)
 
 
