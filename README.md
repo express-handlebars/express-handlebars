@@ -64,7 +64,7 @@ $ npm install express-handlebars
 ```
 
 ## Danger 🔥
- 
+
 Never put objects on the `req` object straight in as the data, this can allow hackers to run XSS attacks. Always make sure you are destructuring the values on objects like `req.query` and `req.params`. See https://blog.shoebpatel.com/2021/01/23/The-Secret-Parameter-LFR-and-Potential-RCE-in-NodeJS-Apps/ for more details.
 
 ## Usage
@@ -91,15 +91,16 @@ This view engine uses sensible defaults that leverage the "Express-way" of struc
 Creates a super simple Express app which shows the basic way to register a Handlebars view engine using this package.
 
 ```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
+import express from 'express';
+import { engine } from 'express-handlebars';
 
-var app = express();
+const app = express();
 
-app.engine('handlebars', exphbs());
+app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
+app.set("views", "./views");
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.render('home');
 });
 
@@ -148,15 +149,16 @@ $ npm start
 Another way to use this view engine is to create an instance(s) of `ExpressHandlebars`, allowing access to the full API:
 
 ```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
+import express from 'express';
+import { create } from 'express-handlebars';
 
-var app = express();
-var hbs = exphbs.create({ /* config */ });
+const app = express();
+const hbs = create({ /* config */ });
 
 // Register `hbs.engine` with the Express app.
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set("views", "./views");
 
 // ...still have a reference to `hbs`, on which methods like `getPartials()`
 // can be called.
@@ -193,7 +195,7 @@ There are two ways to set a default layout: configuring the view engine's `defau
 The layout into which a view should be rendered can be overridden per-request by assigning a different value to the `layout` request local. The following will render the "home" view with no layout:
 
 ```javascript
-app.get('/', function (req, res, next) {
+app.get('/', (req, res, next) => {
     res.render('home', {layout: false});
 });
 ```
@@ -211,29 +213,30 @@ The following example shows helpers being specified at each level:
 Creates a super simple Express app which shows the basic way to register `ExpressHandlebars` instance-level helpers, and override one at the render-level.
 
 ```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
+import express from 'express';
+import { create } from 'express-handlebars';
 
-var app = express();
+const app = express();
 
-var hbs = exphbs.create({
+const hbs = create({
     // Specify helpers which are only registered on this instance.
     helpers: {
-        foo: function () { return 'FOO!'; },
-        bar: function () { return 'BAR!'; }
+        foo() { return 'FOO!'; },
+        bar() { return 'BAR!'; }
     }
 });
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set("views", "./views");
 
-app.get('/', function (req, res, next) {
+app.get('/', (req, res, next) => {
     res.render('home', {
         showTitle: true,
 
         // Override `foo` helper only for this rendering.
         helpers: {
-            foo: function () { return 'foo.'; }
+            foo() { return 'foo.'; }
         }
     });
 });
@@ -309,13 +312,15 @@ The following is the list of metadata that's accessible on the `{{@exphbs}}` dat
 There are two main ways to use this package: via its engine factory function, or creating `ExpressHandlebars` instances; both use the same configuration properties and defaults.
 
 ```javascript
-var exphbs = require('express-handlebars');
+import { engine, create, ExpressHandlebars } from 'express-handlebars';
 
 // Using the engine factory:
-exphbs({ /* config */ });
+engine({ /* config */ });
 
 // Create an instance:
-exphbs.create({ /* config */ });
+create({ /* config */ });
+
+new ExpressHandlebars({ /* config */})
 ```
 
 The following is the list of configuration properties and their default values (if any):
@@ -329,13 +334,14 @@ The string name of the file extension used by the templates. This value should c
 The following example sets up an Express app to use `.hbs` as the file extension for views:
 
 ```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
+import express from 'express';
+import { engine } from 'express-handlebars';
 
-var app = express();
+const app = express();
 
-app.engine('.hbs', exphbs({extname: '.hbs'}));
+app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
+app.set("views", "./views");
 ```
 
 **Note:** Setting the app's `"view engine"` setting will make that value the default file extension used for looking up views.
@@ -426,8 +432,9 @@ views
 `getPartials()` would produce the following result:
 
 ```javascript
-var hbs = require('express-handlebars').create();
+import { create } from 'express-handlebars';
 
+const hbs = create();
 hbs.getPartials().then(function (partials) {
     console.log(partials);
     // => { 'foo/bar': [Function],
