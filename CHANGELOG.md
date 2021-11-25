@@ -1,3 +1,10 @@
+## [6.0.2](https://github.com/express-handlebars/express-handlebars/compare/v6.0.1...v6.0.2) (2021-11-25)
+
+
+### Bug Fixes
+
+* fix typescript in strict mode ([6833d8d](https://github.com/express-handlebars/express-handlebars/commit/6833d8dd4532e45790e04940b646e33f5fd07429))
+
 ## [6.0.1](https://github.com/express-handlebars/express-handlebars/compare/v6.0.0...v6.0.1) (2021-11-13)
 
 
