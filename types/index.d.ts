@@ -1,3 +1,5 @@
+/// <reference types="handlebars" />
+
 export interface UnknownObject {
 	[index: string]: unknown
 }
@@ -62,7 +64,7 @@ export type HandlebarsCompile = (input: unknown, options: CompileOptions) => Han
 export type HandlebarsPrecompile = (input: unknown, options: PrecompileOptions) => TemplateSpecification;
 
 export interface HandlebarsImport {
-	[index: string]: any;
+	[index: string]: unknown;
 	compile: HandlebarsCompile;
 	precompile: HandlebarsPrecompile;
 }
@@ -87,4 +89,4 @@ export interface RenderCallback {
 		(err: Error|null, content?: string): void;
 }
 
-export type Engine = (viewPath: string, options: EngineOptions, callback?: RenderCallback) => Promise<string>
+export type Engine = (viewPath: string, options: ConfigOptions, callback?: RenderCallback) => Promise<string>
