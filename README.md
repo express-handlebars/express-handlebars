@@ -98,7 +98,7 @@ const app = express();
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
-app.set("views", "./views");
+app.set('views', './views');
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -158,7 +158,7 @@ const hbs = create({ /* config */ });
 // Register `hbs.engine` with the Express app.
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set("views", "./views");
+app.set('views', './views');
 
 // ...still have a reference to `hbs`, on which methods like `getPartials()`
 // can be called.
@@ -228,7 +228,7 @@ const hbs = create({
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set("views", "./views");
+app.set('views', './views');
 
 app.get('/', (req, res, next) => {
     res.render('home', {
@@ -320,6 +320,7 @@ engine({ /* config */ });
 // Create an instance:
 create({ /* config */ });
 
+// Using the class:
 new ExpressHandlebars({ /* config */})
 ```
 
@@ -341,7 +342,7 @@ const app = express();
 
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
-app.set("views", "./views");
+app.set('views', './views');
 ```
 
 **Note:** Setting the app's `"view engine"` setting will make that value the default file extension used for looking up views.
