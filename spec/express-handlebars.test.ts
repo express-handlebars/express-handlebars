@@ -2,6 +2,7 @@ import * as path from "path";
 import * as expressHandlebars from "../lib/index";
 import type {
 	TemplateDelegateObject,
+	EngineOptions,
 } from "../types";
 
 function fixturePath (filePath = "") {
@@ -365,7 +366,7 @@ describe("express-handlebars", () => {
 		test("should render html", async () => {
 			const renderView = expressHandlebars.engine({ defaultLayout: null });
 			const viewPath = fixturePath("render-text.handlebars");
-			const html = await renderView(viewPath, { text: "test text" });
+			const html = await renderView(viewPath, { text: "test text" } as EngineOptions);
 			expect(html).toBe("<p>test text</p>");
 		});
 	});
