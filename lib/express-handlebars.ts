@@ -181,7 +181,9 @@ export default class ExpressHandlebars {
 		return hash;
 	}
 
-	async render (filePath: string, context: UnknownObject = {}, options: RenderOptions = {}): Promise<string> {
+	async render (filePath: string, context: UnknownObject, callback: RenderCallback): Promise<null>;
+	async render (filePath: string, context: UnknownObject, options: RenderOptions , callback: RenderCallback): Promise<null>;
+	async render (filePath: string, context: UnknownObject = {}, options: RenderOptions = {}, callback: RenderCallback|null = null): Promise<string> {
 		const encoding = options.encoding || this.encoding;
 		const [template, partials] = await Promise.all([
 			this.getTemplate(filePath, { cache: options.cache, encoding }) as Promise<HandlebarsTemplateDelegate>,
@@ -211,7 +213,9 @@ export default class ExpressHandlebars {
 			partials,
 		});
 
-		return html;
+		if (!callback) return html;
+
+        	callback(null, html);
 	}
 
 	async renderView (viewPath: string): Promise<string>;
