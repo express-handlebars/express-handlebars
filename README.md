@@ -204,7 +204,7 @@ app.get('/', (req, res, next) => {
 
 Helper functions, or "helpers" are functions that can be [registered with Handlebars][] and can be called within a template. Helpers can be used for transforming output, iterating over data, etc. To keep with the spirit of *logic-less* templates, helpers are the place where logic should be defined.
 
-Handlebars ships with some [built-in helpers][], such as: `with`, `if`, `each`, etc. Most application will need to extend this set of helpers to include app-specific logic and transformations. Beyond defining global helpers on `Handlebars`, this view engine supports `ExpressHandlebars` instance-level helpers via the `helpers` configuration property, and render-level helpers via `options.helpers` when calling the `render()` and `renderView()` methods.
+Handlebars ships with some [built-in helpers][], such as: `with`, `if`, `each`, etc. Most applications will need to extend this set of helpers to include app-specific logic and transformations. Beyond defining global helpers on `Handlebars`, this view engine supports `ExpressHandlebars` instance-level helpers via the `helpers` configuration property, and render-level helpers via `options.helpers` when calling the `render()` and `renderView()` methods.
 
 The following example shows helpers being specified at each level:
 
