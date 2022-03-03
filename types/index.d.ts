@@ -75,7 +75,7 @@ export interface ConfigOptions {
 	encoding?: BufferEncoding;
 	layoutsDir?: string;
 	partialsDir?: string|string[]|PartialsDirObject|PartialsDirObject[];
-	defaultLayout?: string;
+	defaultLayout?: string|false;
 	helpers?: UnknownObject;
 	compilerOptions?: CompileOptions;
 	runtimeOptions?: Handlebars.RuntimeOptions;
