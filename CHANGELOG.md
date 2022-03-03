@@ -1,3 +1,11 @@
+## [6.0.3](https://github.com/express-handlebars/express-handlebars/compare/v6.0.2...v6.0.3) (2022-03-03)
+
+
+### Bug Fixes
+
+* allow false for defaultLayout ([#303](https://github.com/express-handlebars/express-handlebars/issues/303)) ([d6180fe](https://github.com/express-handlebars/express-handlebars/commit/d6180fe7ad8ab74e60f58b4ced1b6d6af2d68c42))
+* **deps:** update dependency graceful-fs to ^4.2.9 ([#271](https://github.com/express-handlebars/express-handlebars/issues/271)) ([ea0f1f5](https://github.com/express-handlebars/express-handlebars/commit/ea0f1f563488d67202d7d6067116a4fe67eddf18))
+
 ## [6.0.2](https://github.com/express-handlebars/express-handlebars/compare/v6.0.1...v6.0.2) (2021-11-25)
 
 
