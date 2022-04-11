@@ -24,7 +24,7 @@
     "node": ">=v12.22.9"
   },
   "dependencies": {
-    "glob": "^7.2.0",
+    "glob": "^8.0.1",
     "graceful-fs": "^4.2.10",
     "handlebars": "^4.7.7"
   },
