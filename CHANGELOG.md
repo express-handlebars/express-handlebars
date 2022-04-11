@@ -1,3 +1,10 @@
+## [6.0.5](https://github.com/express-handlebars/express-handlebars/compare/v6.0.4...v6.0.5) (2022-04-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v8 ([4025b58](https://github.com/express-handlebars/express-handlebars/commit/4025b58534b794863b2f51dcdc779d347a46c4a6))
+
 ## [6.0.4](https://github.com/express-handlebars/express-handlebars/compare/v6.0.3...v6.0.4) (2022-04-06)
 
 
