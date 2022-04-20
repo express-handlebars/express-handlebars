@@ -44,7 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "eslint": "^8.13.0",
-    "eslint-config-standard": "^17.0.0-1",
+    "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^14.0.0",
     "eslint-plugin-promise": "^6.0.0",
