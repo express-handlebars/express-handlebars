@@ -47,7 +47,7 @@
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
-    "eslint-plugin-promise": "^6.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "jest-cli": "^29.2.1",
     "semantic-release": "^19.0.5",
     "ts-jest": "^29.0.3",
