@@ -21,7 +21,7 @@
     "url": "https://github.com/express-handlebars/express-handlebars/issues"
   },
   "engines": {
-    "node": ">=v12.22.9"
+    "node": ">=v18.14.2"
   },
   "dependencies": {
     "glob": "^8.1.0",
@@ -41,7 +41,7 @@
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/glob": "^8.0.1",
     "@types/jest": "^29.4.0",
-    "@types/node": "^18.11.13",
+    "@types/node": "^18.14.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.34.0",
