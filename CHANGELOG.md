@@ -1,3 +1,11 @@
+## [7.0.1](https://github.com/express-handlebars/express-handlebars/compare/v7.0.0...v7.0.1) (2023-03-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to ^9.1.0 ([#518](https://github.com/express-handlebars/express-handlebars/issues/518)) ([635922c](https://github.com/express-handlebars/express-handlebars/commit/635922c746c76b0f36fe7061fcecc7c9f64d3b1b))
+* fix cannot use import ([0f45477](https://github.com/express-handlebars/express-handlebars/commit/0f45477b822a9d7814e1d05c493e4b827279717c))
+
 # [7.0.0](https://github.com/express-handlebars/express-handlebars/compare/v6.0.7...v7.0.0) (2023-03-01)
 
 
