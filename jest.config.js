@@ -16,10 +16,12 @@ module.exports = {
 		},
 	},
 	testRegex: /\.test\.tsx?/.source,
-	globals: {
-		"ts-jest": {
-			diagnostics: false,
-		},
+	transform: {
+		[/\.test\.tsx?/.source]: [
+			"ts-jest", {
+				diagnostics: false,
+			},
+		],
 	},
 	moduleFileExtensions: ["js", "json", "jsx", "d.ts", "ts", "tsx", "node"],
 };
