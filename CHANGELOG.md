@@ -1,3 +1,16 @@
+# [7.0.0](https://github.com/express-handlebars/express-handlebars/compare/v6.0.7...v7.0.0) (2023-03-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v9 ([#514](https://github.com/express-handlebars/express-handlebars/issues/514)) ([3b08bbb](https://github.com/express-handlebars/express-handlebars/commit/3b08bbb05fe195a855a090fadc11fc183f5c2292))
+* minimum Node v16 ([#516](https://github.com/express-handlebars/express-handlebars/issues/516)) ([86da3b2](https://github.com/express-handlebars/express-handlebars/commit/86da3b229b9c3bdf1c0e5924a796199a861ec260))
+
+
+### BREAKING CHANGES
+
+* minimum node version is v16
+
 ## [6.0.7](https://github.com/express-handlebars/express-handlebars/compare/v6.0.6...v6.0.7) (2023-01-25)
 
 
