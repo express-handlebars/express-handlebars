@@ -4,6 +4,7 @@
     "target": "ES2015",
     "declaration": true,
     "sourceMap": true,
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
