@@ -5,7 +5,7 @@ export interface UnknownObject {
 }
 
 export interface FunctionObject {
-	[index: string]: (...args: unknown[]) => unknown;
+	[index: string]: (...args: any[]) => unknown;
 }
 
 export interface TemplateDelegateObject {

@@ -6,9 +6,9 @@
 
 import * as Handlebars from "handlebars";
 import * as fs from "graceful-fs";
-import * as path from "path";
-import { promisify } from "util";
-import * as globSync from "glob";
+import * as path from "node:path";
+import { promisify } from "node:util";
+import glob from "glob";
 import type {
 	UnknownObject,
 	FunctionObject,
@@ -28,7 +28,6 @@ import type {
 	RenameFunction,
 } from "../types";
 
-const glob = promisify(globSync);
 const readFile = promisify(fs.readFile);
 
 // -----------------------------------------------------------------------------
@@ -325,7 +324,7 @@ export default class ExpressHandlebars {
 				cwd: dirPath,
 				follow: true,
 			});
-			// @ts-ignore FIXME: not sure how to throw error in glob for test coverage
+			// @ts-expect-error FIXME: not sure how to throw error in glob for test coverage
 			if (options._throwTestError) {
 				throw new Error("test");
 			}

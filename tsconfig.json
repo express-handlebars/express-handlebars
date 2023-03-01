@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es5",
+    "target": "ES2015",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./lib/**/*"]
 }

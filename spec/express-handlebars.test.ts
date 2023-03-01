@@ -1,4 +1,4 @@
-import * as path from "path";
+import * as path from "node:path";
 import * as expressHandlebars from "../lib/index";
 import type {
 	TemplateDelegateObject,
@@ -30,14 +30,14 @@ describe("express-handlebars", () => {
 		test("should throw if partialsDir is not correct type", async () => {
 			// @ts-expect-error partialsDir is invalid
 			const exphbs = expressHandlebars.create({ partialsDir: 1 });
-			let error: Error;
+			let error: Error | undefined;
 			try {
 				await exphbs.getPartials();
 			} catch (e) {
 				error = e;
 			}
 			expect(error).toEqual(expect.any(Error));
-			expect(error.message).toBe("A partials dir must be a string or config object");
+			expect(error?.message).toBe("A partials dir must be a string or config object");
 		});
 
 		test("should return empty object if no partialsDir is defined", async () => {
@@ -208,13 +208,13 @@ describe("express-handlebars", () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = "does-not-exist";
 			expect(exphbs.compiled[filePath]).toBeUndefined();
-			let error: Error;
+			let error: Error | undefined;
 			try {
 				await exphbs.getTemplate(filePath);
 			} catch (e) {
 				error = e;
 			}
-			expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
+			expect(error?.message).toEqual(expect.stringContaining("no such file or directory"));
 			expect(exphbs.compiled[filePath]).toBeUndefined();
 		});
 	});
@@ -241,10 +241,11 @@ describe("express-handlebars", () => {
 			const exphbs = expressHandlebars.create();
 			const dirPath = fixturePath("templates");
 			const templates = await exphbs.getTemplates(dirPath);
-			expect(Object.keys(templates)).toEqual([
-				"subdir/template.handlebars",
-				"template-latin1.handlebars",
+			const paths = Object.keys(templates).map(t => t.replace(/\\/g, "/"));
+			expect(paths).toEqual([
 				"template.handlebars",
+				"template-latin1.handlebars",
+				"subdir/template.handlebars",
 			]);
 		});
 	});
@@ -254,7 +255,7 @@ describe("express-handlebars", () => {
 			const exphbs = expressHandlebars.create();
 			const filePath = fixturePath("render-cached.handlebars");
 			exphbs.compiled[filePath] = Promise.resolve(() => "cached");
-			const html = await exphbs.render(filePath, null, { cache: true });
+			const html = await exphbs.render(filePath, undefined, { cache: true });
 			expect(html).toBe("cached");
 		});
 
@@ -296,7 +297,7 @@ describe("express-handlebars", () => {
 				partialsDir: fixturePath("partials"),
 			});
 			const filePath = fixturePath("render-latin1.handlebars");
-			const html = await exphbs.render(filePath, null, { encoding: "latin1" });
+			const html = await exphbs.render(filePath, undefined, { encoding: "latin1" });
 			expect(html).toContain("partial ñáéíóú");
 			expect(html).toContain("render ñáéíóú");
 		});
@@ -328,7 +329,7 @@ describe("express-handlebars", () => {
 			const filePath = fixturePath("test");
 			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
 			exphbs.compiled[filePath] = Promise.resolve(spy);
-			await exphbs.render(filePath, null, { cache: true });
+			await exphbs.render(filePath, undefined, { cache: true });
 			expect(spy).toHaveBeenCalledWith(expect.any(Object), expect.objectContaining({ allowProtoPropertiesByDefault: true }));
 		});
 
@@ -339,7 +340,7 @@ describe("express-handlebars", () => {
 			const filePath = fixturePath("test");
 			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
 			exphbs.compiled[filePath] = Promise.resolve(spy);
-			await exphbs.render(filePath, null, {
+			await exphbs.render(filePath, undefined, {
 				cache: true,
 				runtimeOptions: { allowProtoPropertiesByDefault: false },
 			});
@@ -364,7 +365,7 @@ describe("express-handlebars", () => {
 		});
 
 		test("should render html", async () => {
-			const renderView = expressHandlebars.engine({ defaultLayout: null });
+			const renderView = expressHandlebars.engine({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await renderView(viewPath, { text: "test text" } as EngineOptions);
 			expect(html).toBe("<p>test text</p>");
@@ -395,7 +396,7 @@ describe("express-handlebars", () => {
 		});
 
 		test("should not use settings.views array when no parent found", async () => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
 			const viewsPath = "does-not-exist";
 			const html = await exphbs.renderView(viewPath, {
@@ -438,7 +439,7 @@ describe("express-handlebars", () => {
 
 		test("should merge helpers", async () => {
 			const exphbs = expressHandlebars.create({
-				defaultLayout: null,
+				defaultLayout: undefined,
 				helpers: {
 					help: () => "help",
 				},
@@ -454,7 +455,7 @@ describe("express-handlebars", () => {
 		});
 
 		test("should use layout option", async () => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const layoutPath = fixturePath("layouts/main.handlebars");
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await exphbs.renderView(viewPath, {
@@ -465,7 +466,7 @@ describe("express-handlebars", () => {
 		});
 
 		test("should render html", async () => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
 			const html = await exphbs.renderView(viewPath, { text: "test text" });
 			expect(html).toBe("<p>test text</p>");
@@ -499,9 +500,9 @@ describe("express-handlebars", () => {
 		});
 
 		test("should call callback with html", (done) => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, { text: "test text" }, (err: Error|null, html: string) => {
+			exphbs.renderView(viewPath, { text: "test text" }, (err: Error|null, html: string|undefined) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p>test text</p>");
 				done();
@@ -509,9 +510,9 @@ describe("express-handlebars", () => {
 		});
 
 		test("should call callback as second parameter", (done) => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, (err: Error|null, html: string) => {
+			exphbs.renderView(viewPath, (err: Error|null, html: string|undefined) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p></p>");
 				done();
@@ -519,29 +520,29 @@ describe("express-handlebars", () => {
 		});
 
 		test("should call callback with error", (done) => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = "does-not-exist";
-			exphbs.renderView(viewPath, {}, (err: Error|null, html: string) => {
-				expect(err.message).toEqual(expect.stringContaining("no such file or directory"));
+			exphbs.renderView(viewPath, {}, (err: Error|null, html: string | undefined) => {
+				expect(err?.message).toEqual(expect.stringContaining("no such file or directory"));
 				expect(html).toBeUndefined();
 				done();
 			});
 		});
 
 		test("should reject with error", async () => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = "does-not-exist";
-			let error: Error;
+			let error: Error | undefined;
 			try {
 				await exphbs.renderView(viewPath);
 			} catch (e) {
 				error = e;
 			}
-			expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
+			expect(error?.message).toEqual(expect.stringContaining("no such file or directory"));
 		});
 
 		test("should use runtimeOptions", async () => {
-			const exphbs = expressHandlebars.create({ defaultLayout: null });
+			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const filePath = fixturePath("test");
 			const spy = jest.fn(() => { return "test"; }) as Handlebars.TemplateDelegate;
 			exphbs.compiled[filePath] = Promise.resolve(spy);
@@ -637,7 +638,7 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = "test";
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				let error: Error;
+				let error: Error | undefined;
 				try {
 					await exphbs["_getDir"](filePath, {
 						// @ts-expect-error Add this just for testing
@@ -672,13 +673,13 @@ describe("express-handlebars", () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = "does-not-exist";
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				let error: Error;
+				let error: Error | undefined;
 				try {
 					await exphbs["_getFile"](filePath);
 				} catch (e) {
 					error = e;
 				}
-				expect(error.message).toEqual(expect.stringContaining("no such file or directory"));
+				expect(error?.message).toEqual(expect.stringContaining("no such file or directory"));
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
 			});
 
@@ -690,7 +691,7 @@ describe("express-handlebars", () => {
 			});
 
 			test("should read as utf8 by default", async () => {
-				const exphbs = expressHandlebars.create({ encoding: null });
+				const exphbs = expressHandlebars.create({ encoding: undefined });
 				const filePath = fixturePath("render-text.handlebars");
 				const text = await exphbs["_getFile"](filePath);
 				expect(text.trim()).toBe("<p>{{text}}</p>");
@@ -751,6 +752,7 @@ describe("express-handlebars", () => {
 
 			test("should return null views", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error shouldn't expect null parameter
 				const viewsPath = exphbs["_resolveViewsPath"](null, "filePath.hbs");
 				expect(viewsPath).toBe(null);
 			});
@@ -782,6 +784,7 @@ describe("express-handlebars", () => {
 
 			test("should return null", () => {
 				const exphbs = expressHandlebars.create();
+				// @ts-expect-error shouldn't expect null parameter
 				const layoutPath = exphbs["_resolveLayoutPath"](null);
 				expect(layoutPath).toBe(null);
 			});
