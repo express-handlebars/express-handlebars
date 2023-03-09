@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/express-handlebars/express-handlebars/compare/v7.0.1...v7.0.2) (2023-03-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to ^9.2.1 ([#520](https://github.com/express-handlebars/express-handlebars/issues/520)) ([16a9bc3](https://github.com/express-handlebars/express-handlebars/commit/16a9bc356ba333586bb1626d2402d9aa7df948fd))
+
 ## [7.0.1](https://github.com/express-handlebars/express-handlebars/compare/v7.0.0...v7.0.1) (2023-03-01)
 
 
