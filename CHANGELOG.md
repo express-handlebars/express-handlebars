@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/express-handlebars/express-handlebars/compare/v7.0.3...v7.0.4) (2023-03-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency graceful-fs to ^4.2.11 ([#531](https://github.com/express-handlebars/express-handlebars/issues/531)) ([570e73d](https://github.com/express-handlebars/express-handlebars/commit/570e73da862694ee3b760c3616eb23ace7b0d4af))
+
 ## [7.0.3](https://github.com/express-handlebars/express-handlebars/compare/v7.0.2...v7.0.3) (2023-03-23)
 
 
