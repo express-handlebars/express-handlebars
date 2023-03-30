@@ -52,7 +52,7 @@
     "jest-cli": "^29.5.0",
     "semantic-release": "^21.0.0",
     "ts-jest": "^29.0.5",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   },
   "release": {
     "plugins": [
