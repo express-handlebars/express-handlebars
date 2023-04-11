@@ -8,7 +8,7 @@ import * as Handlebars from "handlebars";
 import * as fs from "graceful-fs";
 import * as path from "node:path";
 import { promisify } from "node:util";
-import glob from "glob";
+import { glob } from "glob";
 import type {
 	UnknownObject,
 	FunctionObject,
