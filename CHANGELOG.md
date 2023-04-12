@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/express-handlebars/express-handlebars/compare/v7.0.5...v7.0.6) (2023-04-12)
+
+
+### Bug Fixes
+
+* replace backslash in partials with forward slash ([#553](https://github.com/express-handlebars/express-handlebars/issues/553)) ([2ecd784](https://github.com/express-handlebars/express-handlebars/commit/2ecd7840cb16d0e5013469b84183211e02212053))
+
 ## [7.0.5](https://github.com/express-handlebars/express-handlebars/compare/v7.0.4...v7.0.5) (2023-04-11)
 
 
