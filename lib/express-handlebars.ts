@@ -288,7 +288,7 @@ export default class ExpressHandlebars {
 		return promise;
 	}
 
-	resetCache(filePathsOrFilter?: string | string[] | undefined | ((template: string) => boolean)) {
+	resetCache (filePathsOrFilter?: string | string[] | ((template: string) => boolean)) {
 		let filePaths: string[] = [];
 
 		if (typeof filePathsOrFilter === "undefined") {

@@ -577,6 +577,17 @@ describe("express-handlebars", () => {
 			expect(exphbs._fsCache).toEqual({});
 		});
 
+		test("should reset all cache with undefined", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/template.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(exphbs._fsCache[template]).toBeDefined();
+			let undef: undefined;
+			exphbs.resetCache(undef);
+			expect(exphbs._fsCache).toEqual({});
+		});
+
 		test("should reset cached file path", async () => {
 			const exphbs = expressHandlebars.create();
 			const dirPath = fixturePath("templates");
