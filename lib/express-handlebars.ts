@@ -328,7 +328,8 @@ export default class ExpressHandlebars {
 			if (options._throwTestError) {
 				throw new Error("test");
 			}
-			return (await dir).concat();
+
+			return (await dir).map(d => d.replace(/\\/g, "/"));
 		} catch (err) {
 			delete cache[dirPath];
 			throw err;

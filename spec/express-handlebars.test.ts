@@ -58,6 +58,7 @@ describe("express-handlebars", () => {
 			expect(partials).toEqual({
 				partial: expect.any(Function),
 				"partial-latin1": expect.any(Function),
+				"subdir/partial-subdir": expect.any(Function),
 			});
 		});
 
@@ -67,6 +68,7 @@ describe("express-handlebars", () => {
 			expect(partials).toEqual({
 				partial: expect.any(Function),
 				"partial-latin1": expect.any(Function),
+				"subdir/partial-subdir": expect.any(Function),
 			});
 		});
 
@@ -109,6 +111,7 @@ describe("express-handlebars", () => {
 			expect(partials).toEqual({
 				partial: expect.any(Function),
 				"partial-latin1": expect.any(Function),
+				"subdir/partial-subdir": expect.any(Function),
 			});
 		});
 
@@ -241,7 +244,7 @@ describe("express-handlebars", () => {
 			const exphbs = expressHandlebars.create();
 			const dirPath = fixturePath("templates");
 			const templates = await exphbs.getTemplates(dirPath);
-			const paths = Object.keys(templates).map(t => t.replace(/\\/g, "/"));
+			const paths = Object.keys(templates);
 			expect(paths).toEqual([
 				"template.handlebars",
 				"template-latin1.handlebars",
@@ -320,6 +323,15 @@ describe("express-handlebars", () => {
 			const filePath = fixturePath("render-partial.handlebars");
 			const html = await exphbs.render(filePath, { text: "test text" });
 			expect(html.replace(/\r/g, "")).toBe("<h1>partial test text</h1>\n<p>test text</p>");
+		});
+
+		test("should render with subdir/partial", async () => {
+			const exphbs = expressHandlebars.create({
+				partialsDir: fixturePath("partials"),
+			});
+			const filePath = fixturePath("render-subdir-partial.handlebars");
+			const html = await exphbs.render(filePath, { text: "test text" });
+			expect(html.replace(/\r/g, "")).toBe("<h1>subdir partial test text</h1>\n<p>test text</p>");
 		});
 
 		test("should render with runtimeOptions", async () => {
