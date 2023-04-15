@@ -633,17 +633,18 @@ describe("express-handlebars", () => {
 			test("should get from cache", async () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("test");
-				exphbs._fsCache[filePath] = "test";
+				exphbs._fsCache[filePath] = Promise.resolve(["test"]);
 				const file = await exphbs["_getDir"](filePath, { cache: true });
-				expect(file).toBe("test");
+				expect(file).toEqual(["test"]);
 			});
 
 			test("should store in cache", async () => {
 				const exphbs = expressHandlebars.create();
 				const filePath = fixturePath("templates");
 				expect(exphbs._fsCache[filePath]).toBeUndefined();
-				await exphbs["_getDir"](filePath);
-				expect(exphbs._fsCache[filePath]).toBeDefined();
+				const expected = await exphbs["_getDir"](filePath);
+				expect(exphbs._fsCache[filePath]).toBeInstanceOf(Promise);
+				expect(await exphbs._fsCache[filePath]).toEqual(expected);
 			});
 
 			test("should not store in cache on error", async () => {
