@@ -311,7 +311,7 @@ export default class ExpressHandlebars {
 		let dir = options.cache && (cache[dirPath] as Promise<string[]>);
 
 		if (dir) {
-			return (await dir).concat();
+			return [...await dir];
 		}
 
 		const pattern = "**/*" + this.extname;
@@ -330,7 +330,7 @@ export default class ExpressHandlebars {
 				throw new Error("test");
 			}
 
-			return (await dir).concat();
+			return [...await dir];
 		} catch (err) {
 			delete cache[dirPath];
 			throw err;
