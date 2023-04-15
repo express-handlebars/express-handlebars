@@ -323,13 +323,14 @@ export default class ExpressHandlebars {
 			dir = cache[dirPath] = glob(pattern, {
 				cwd: dirPath,
 				follow: true,
+				posix: true,
 			});
 			// @ts-expect-error FIXME: not sure how to throw error in glob for test coverage
 			if (options._throwTestError) {
 				throw new Error("test");
 			}
 
-			return (await dir).map(d => d.replace(/\\/g, "/"));
+			return (await dir).concat();
 		} catch (err) {
 			delete cache[dirPath];
 			throw err;
