@@ -37,7 +37,7 @@
     "@semantic-release/commit-analyzer": "^10.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.0.3",
-    "@semantic-release/npm": "^10.0.3",
+    "@semantic-release/npm": "^10.0.4",
     "@semantic-release/release-notes-generator": "^11.0.3",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.2",
@@ -50,7 +50,7 @@
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "jest-cli": "^29.5.0",
-    "semantic-release": "^21.0.3",
+    "semantic-release": "^21.0.5",
     "ts-jest": "^29.1.0",
     "typescript": "^5.1.3"
   },
