@@ -49,7 +49,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
-    "jest-cli": "^29.5.0",
+    "jest-cli": "^29.6.0",
     "semantic-release": "^21.0.6",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6"
