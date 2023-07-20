@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/express-handlebars/express-handlebars/compare/v7.0.7...v7.1.0) (2023-07-20)
+
+
+### Features
+
+* add resetCache ([#554](https://github.com/express-handlebars/express-handlebars/issues/554)) ([868e9b4](https://github.com/express-handlebars/express-handlebars/commit/868e9b4ac9690de5000385c1fecdef858cf8d504))
+
 ## [7.0.7](https://github.com/express-handlebars/express-handlebars/compare/v7.0.6...v7.0.7) (2023-04-15)
 
 
