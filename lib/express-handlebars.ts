@@ -288,6 +288,24 @@ export default class ExpressHandlebars {
 		return promise;
 	}
 
+	resetCache (filePathsOrFilter?: string | string[] | ((template: string) => boolean)) {
+		let filePaths: string[] = [];
+
+		if (typeof filePathsOrFilter === "undefined") {
+			filePaths = Object.keys(this._fsCache);
+		} else if (typeof filePathsOrFilter === "string") {
+			filePaths = [filePathsOrFilter];
+		} else if (typeof filePathsOrFilter === "function") {
+			filePaths = Object.keys(this._fsCache).filter(filePathsOrFilter);
+		} else if (Array.isArray(filePathsOrFilter)) {
+			filePaths = filePathsOrFilter;
+		}
+
+		for (const filePath of filePaths) {
+			delete this._fsCache[filePath];
+		}
+	}
+
 	// -- Protected Hooks ----------------------------------------------------------
 
 	protected _compileTemplate (template: string, options: RuntimeOptions = {}): HandlebarsTemplateDelegate {

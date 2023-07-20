@@ -4,7 +4,6 @@ Express Handlebars
 A [Handlebars][] view engine for [Express][] which doesn't suck.
 
 [![npm version][npm-badge]][npm]
-[![dependency status][dep-badge]][dep-status]
 
 **This package used to be named `express3-handlebars`. The previous `express-handlebars` package by @jneen can be found [here][jneen-exphbs].**
 
@@ -13,8 +12,6 @@ A [Handlebars][] view engine for [Express][] which doesn't suck.
 [Handlebars]: https://github.com/handlebars-lang/handlebars.js
 [npm]: https://www.npmjs.org/package/express-handlebars
 [npm-badge]: https://img.shields.io/npm/v/express-handlebars.svg?style=flat-square
-[dep-status]: https://david-dm.org/express-handlebars/express-handlebars
-[dep-badge]: https://img.shields.io/david/express-handlebars/express-handlebars.svg?style=flat-square
 [jneen-exphbs]: https://github.com/jneen/express-handlebars
 
 
@@ -476,6 +473,13 @@ Use `options.precompiled` to receive precompiled Handlebars templates — this i
   * `[encoding]`: File encoding.
 
   * `[precompiled=false]`: Whether precompiled templates should be provided, instead of a compiled Handlebars template function.
+
+#### `resetCache([filePathsOrFilter])`
+Reset template cache. The cache can be partially reset by providing a filter argument. If no argument is given the whole cache will be reset.
+
+**Parameters:**
+
+* `[filePathsOrFilter]`: Optional filter to reset part of the cache. This can be a file path, an array of file paths, or a filter function based on file path.
 
 #### `render(filePath, context, [options])`
 Renders the template at the specified `filePath` with the `context`, using this instance's `helpers` and partials by default, and returns a Promise for the resulting string.

@@ -566,6 +566,80 @@ describe("express-handlebars", () => {
 		});
 	});
 
+	describe("resetCache", () => {
+		test("should reset all cache", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/template.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(exphbs._fsCache[template]).toBeDefined();
+			exphbs.resetCache();
+			expect(exphbs._fsCache).toEqual({});
+		});
+
+		test("should reset all cache with undefined", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/template.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(exphbs._fsCache[template]).toBeDefined();
+			let undef: undefined;
+			exphbs.resetCache(undef);
+			expect(exphbs._fsCache).toEqual({});
+		});
+
+		test("should reset cached file path", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/template.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(4);
+			expect(exphbs._fsCache[template]).toBeDefined();
+			exphbs.resetCache(template);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(3);
+			expect(exphbs._fsCache[template]).toBeUndefined();
+		});
+
+		test("should reset cached file paths", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/template.handlebars");
+			const templateLatin1 = fixturePath("templates/template-latin1.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(4);
+			expect(exphbs._fsCache[template]).toBeDefined();
+			expect(exphbs._fsCache[templateLatin1]).toBeDefined();
+			exphbs.resetCache([template, templateLatin1]);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(2);
+			expect(exphbs._fsCache[template]).toBeUndefined();
+			expect(exphbs._fsCache[templateLatin1]).toBeUndefined();
+		});
+
+		test("should reset cached file based on filter", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const templateLatin1 = fixturePath("templates/template-latin1.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(4);
+			expect(exphbs._fsCache[templateLatin1]).toBeDefined();
+			exphbs.resetCache((f) => f.includes("latin1"));
+			expect(Object.keys(exphbs._fsCache).length).toEqual(3);
+			expect(exphbs._fsCache[templateLatin1]).toBeUndefined();
+		});
+
+		test("should not error on invalid file path", async () => {
+			const exphbs = expressHandlebars.create();
+			const dirPath = fixturePath("templates");
+			const template = fixturePath("templates/invalid.handlebars");
+			await exphbs.getTemplates(dirPath);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(4);
+			expect(exphbs._fsCache[template]).toBeUndefined();
+			exphbs.resetCache(template);
+			expect(Object.keys(exphbs._fsCache).length).toEqual(4);
+			expect(exphbs._fsCache[template]).toBeUndefined();
+		});
+	});
+
 	describe("hooks", () => {
 		describe("_compileTemplate", () => {
 			test("should call template with context and options", () => {
