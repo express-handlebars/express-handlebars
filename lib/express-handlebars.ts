@@ -11,7 +11,7 @@ import { promisify } from "node:util";
 import { glob } from "glob";
 import type {
 	UnknownObject,
-	FunctionObject,
+	HelperDelegateObject,
 	ConfigOptions,
 	Engine,
 	TemplateSpecificationObject,
@@ -56,7 +56,7 @@ export default class ExpressHandlebars {
 	partialsDir: string|PartialsDirObject|(string|PartialsDirObject)[];
 	compilerOptions: CompileOptions;
 	runtimeOptions: RuntimeOptions;
-	helpers: FunctionObject;
+	helpers: HelperDelegateObject;
 	defaultLayout: string;
 	handlebars: HandlebarsImport;
 
@@ -186,7 +186,7 @@ export default class ExpressHandlebars {
 			this.getTemplate(filePath, { cache: options.cache, encoding }) as Promise<HandlebarsTemplateDelegate>,
 			(options.partials || this.getPartials({ cache: options.cache, encoding })) as Promise<TemplateDelegateObject>,
 		]);
-		const helpers: FunctionObject = { ...this.helpers, ...options.helpers };
+		const helpers: HelperDelegateObject = { ...this.helpers, ...options.helpers };
 		const runtimeOptions = { ...this.runtimeOptions, ...options.runtimeOptions };
 
 		// Add ExpressHandlebars metadata to the data channel so that it's
