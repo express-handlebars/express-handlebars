@@ -1,3 +1,10 @@
+## [7.1.2](https://github.com/express-handlebars/express-handlebars/compare/v7.1.1...v7.1.2) (2023-08-08)
+
+
+### Bug Fixes
+
+* use types from handlebars for helpers ([#617](https://github.com/express-handlebars/express-handlebars/issues/617)) ([bc38da4](https://github.com/express-handlebars/express-handlebars/commit/bc38da4199cdc450dd84537c0515da475ef0d6ad))
+
 ## [7.1.1](https://github.com/express-handlebars/express-handlebars/compare/v7.1.0...v7.1.1) (2023-08-02)
 
 
