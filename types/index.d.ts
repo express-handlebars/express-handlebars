@@ -4,8 +4,8 @@ export interface UnknownObject {
 	[index: string]: unknown
 }
 
-export interface FunctionObject {
-	[index: string]: (...args: any[]) => unknown;
+export interface HelperDelegateObject {
+	[index: string]: Handlebars.HelperDelegate;
 }
 
 export interface TemplateDelegateObject {
@@ -47,7 +47,7 @@ export interface RenderOptions {
 	cache?: boolean;
 	data?: UnknownObject;
 	encoding?: BufferEncoding;
-	helpers?: FunctionObject;
+	helpers?: HelperDelegateObject;
 	layout?: string;
 	partials?: TemplateDelegateObject;
 	runtimeOptions?: Handlebars.RuntimeOptions;
