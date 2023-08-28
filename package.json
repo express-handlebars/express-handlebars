@@ -34,11 +34,11 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^10.0.3",
+    "@semantic-release/commit-analyzer": "^10.0.4",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.0.4",
     "@semantic-release/npm": "^10.0.5",
-    "@semantic-release/release-notes-generator": "^11.0.6",
+    "@semantic-release/release-notes-generator": "^11.0.7",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.4",
     "@types/node": "^18.17.3",
