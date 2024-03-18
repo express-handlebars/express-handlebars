@@ -50,7 +50,7 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "jest-cli": "^29.7.0",
-    "semantic-release": "^23.0.4",
+    "semantic-release": "^23.0.5",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.2"
   },
