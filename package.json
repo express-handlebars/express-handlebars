@@ -34,11 +34,11 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^10.0.5",
     "@semantic-release/npm": "^12.0.1",
-    "@semantic-release/release-notes-generator": "^13.0.0",
+    "@semantic-release/release-notes-generator": "^14.0.0",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.19.32",
@@ -50,7 +50,7 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.2.0",
     "jest-cli": "^29.7.0",
-    "semantic-release": "^23.1.1",
+    "semantic-release": "^24.0.0",
     "ts-jest": "^29.1.4",
     "typescript": "^5.4.5"
   },
