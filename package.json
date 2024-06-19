@@ -41,7 +41,7 @@
     "@semantic-release/release-notes-generator": "^14.0.0",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^18.19.32",
+    "@types/node": "^18.19.36",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "eslint": "^8.57.0",
