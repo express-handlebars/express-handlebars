@@ -9,10 +9,6 @@ function fixturePath (filePath = "") {
 	return path.resolve(__dirname, "./fixtures", filePath);
 }
 
-// allow access to private functions for testing
-// https://github.com/microsoft/TypeScript/issues/19335
-/* eslint-disable dot-notation, @typescript-eslint/no-empty-function */
-
 describe("express-handlebars", () => {
 	test("ExpressHandlebars instance", () => {
 		const exphbs = new expressHandlebars.ExpressHandlebars();

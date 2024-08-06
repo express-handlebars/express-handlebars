@@ -228,7 +228,13 @@ export default class ExpressHandlebars {
 		let promise: Promise<string>|null = null;
 		if (!callback) {
 			promise = new Promise((resolve, reject) => {
-				callback = (err, value) => { err !== null ? reject(err) : resolve(value); };
+				callback = (err, value) => {
+					if (err !== null) {
+						reject(err);
+					} else {
+						resolve(value);
+					};
+				};
 			});
 		}
 
