@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/express-handlebars/express-handlebars/compare/v8.0.0...v8.0.1) (2024-08-07)
+
+
+### Bug Fixes
+
+* remove module type ([#857](https://github.com/express-handlebars/express-handlebars/issues/857)) ([efca370](https://github.com/express-handlebars/express-handlebars/commit/efca37028ba2af18310400e2f8be87842e17d6b1))
+
 # [8.0.0](https://github.com/express-handlebars/express-handlebars/compare/v7.1.3...v8.0.0) (2024-08-07)
 
 
