@@ -1,3 +1,15 @@
+# [8.0.0](https://github.com/express-handlebars/express-handlebars/compare/v7.1.3...v8.0.0) (2024-08-07)
+
+
+### Bug Fixes
+
+* require node v20 ([#854](https://github.com/express-handlebars/express-handlebars/issues/854)) ([cb0358e](https://github.com/express-handlebars/express-handlebars/commit/cb0358e15f574e438f40726f9a1683e1c9052522))
+
+
+### BREAKING CHANGES
+
+* minimum node v20
+
 ## [7.1.3](https://github.com/express-handlebars/express-handlebars/compare/v7.1.2...v7.1.3) (2024-06-19)
 
 
