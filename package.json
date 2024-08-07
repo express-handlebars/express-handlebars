@@ -3,7 +3,6 @@
   "description": "A Handlebars view engine for Express which doesn't suck.",
   "version": "8.0.0",
   "homepage": "https://github.com/express-handlebars/express-handlebars",
-  "type": "module",
   "keywords": [
     "express",
     "express3",
