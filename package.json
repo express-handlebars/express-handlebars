@@ -21,7 +21,7 @@
     "url": "https://github.com/express-handlebars/express-handlebars/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.18.0"
   },
   "dependencies": {
     "glob": "^11.0.0",
@@ -42,7 +42,7 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.13",
-    "@types/node": "^20.14.14",
+    "@types/node": "^20.16.12",
     "eslint": "^9.12.0",
     "globals": "^15.11.0",
     "jest-cli": "^29.7.0",
