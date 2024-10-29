@@ -42,7 +42,7 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20.14.14",
+    "@types/node": "^22.8.2",
     "eslint": "^9.13.0",
     "globals": "^15.11.0",
     "jest-cli": "^29.7.0",
