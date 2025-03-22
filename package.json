@@ -33,7 +33,7 @@
     "example": "examples"
   },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
+    "@eslint/js": "^9.23.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -43,7 +43,7 @@
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.11",
-    "eslint": "^9.22.0",
+    "eslint": "^9.23.0",
     "globals": "^16.0.0",
     "jest-cli": "^29.7.0",
     "semantic-release": "^24.2.3",
