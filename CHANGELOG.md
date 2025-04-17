@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/express-handlebars/express-handlebars/compare/v8.0.1...v8.0.2) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to ^11.0.1 ([#928](https://github.com/express-handlebars/express-handlebars/issues/928)) ([b4b9cd3](https://github.com/express-handlebars/express-handlebars/commit/b4b9cd332232136c5fee7155253a5152c7107cc3))
+
 ## [8.0.1](https://github.com/express-handlebars/express-handlebars/compare/v8.0.0...v8.0.1) (2024-08-07)
 
 
