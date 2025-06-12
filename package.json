@@ -47,7 +47,7 @@
     "globals": "^16.2.0",
     "jest-cli": "^30.0.0",
     "semantic-release": "^24.2.5",
-    "ts-jest": "^29.3.4",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0"
   },
