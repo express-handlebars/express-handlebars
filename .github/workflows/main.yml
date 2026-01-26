@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 env:
   CI: true
 
@@ -14,53 +17,53 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
-        node_version: ['lts/*']
+        node_version: ["lts/*"]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v6
-    - name: Install Node
-      uses: actions/setup-node@v6
-      with:
-        node-version: ${{ matrix.node_version }}
-        check-latest: true
-    - name: Install dependencies
-      run: npm ci
-    - name: Run tests 👩🏾‍💻
-      run: npm run test
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node_version }}
+          check-latest: true
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests 👩🏾‍💻
+        run: npm run test
   TestNode:
     name: Test
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node_version: ['20', 'lts/*', '*']
+        node_version: ["20", "lts/*", "*"]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v6
-    - name: Install Node
-      uses: actions/setup-node@v6
-      with:
-        node-version: ${{ matrix.node_version }}
-        check-latest: true
-    - name: Install dependencies
-      run: npm ci
-    - name: Run tests 👩🏾‍💻
-      run: npm run test
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node_version }}
+          check-latest: true
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests 👩🏾‍💻
+        run: npm run test
   Coverage:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v6
-    - name: Install Node
-      uses: actions/setup-node@v6
-      with:
-        node-version: 'lts/*'
-        check-latest: true
-    - name: Install dependencies
-      run: npm ci
-    - name: Run tests 👩🏾‍💻
-      run: npm run test:cover
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "lts/*"
+          check-latest: true
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests 👩🏾‍💻
+        run: npm run test:cover
   Lint:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +72,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
           check-latest: true
       - name: NPM install
         run: npm ci
@@ -83,7 +86,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
           check-latest: true
       - name: NPM install
         run: npm ci
@@ -91,6 +94,11 @@ jobs:
         run: npm run build
 
   Release:
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
     needs: [TestOS, TestNode, Coverage, Lint, Build]
     if: |
       github.ref == 'refs/heads/master' &&
@@ -102,7 +110,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
           check-latest: true
       - name: NPM install
         run: npm ci
@@ -111,5 +119,4 @@ jobs:
       - name: Release 🎉
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
