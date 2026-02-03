@@ -24,7 +24,7 @@
     "node": ">=22.21.1"
   },
   "dependencies": {
-    "glob": "^13.0.0",
+    "glob": "^13.0.1",
     "graceful-fs": "^4.2.11",
     "handlebars": "^4.7.8"
   },
