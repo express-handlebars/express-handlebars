@@ -579,8 +579,7 @@ describe("express-handlebars", () => {
 			const template = fixturePath("templates/template.handlebars");
 			await exphbs.getTemplates(dirPath);
 			expect(exphbs._fsCache[template]).toBeDefined();
-			let undef: undefined;
-			exphbs.resetCache(undef);
+			exphbs.resetCache(undefined);
 			expect(exphbs._fsCache).toEqual({});
 		});
 
