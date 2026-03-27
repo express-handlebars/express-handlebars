@@ -26,7 +26,7 @@
   "dependencies": {
     "glob": "^13.0.6",
     "graceful-fs": "^4.2.11",
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.9"
   },
   "main": "dist/index.js",
   "directories": {
