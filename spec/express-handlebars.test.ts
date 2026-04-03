@@ -4,6 +4,7 @@ import type {
 	TemplateDelegateObject,
 	EngineOptions,
 } from "../types";
+import Handlebars from "handlebars";
 
 function fixturePath(filePath = "") {
 	return path.resolve(__dirname, "./fixtures", filePath);
@@ -13,6 +14,11 @@ describe("express-handlebars", () => {
 	test("ExpressHandlebars instance", () => {
 		const exphbs = new expressHandlebars.ExpressHandlebars();
 		expect(exphbs).toBeDefined();
+	});
+
+	test("should set handlebars", () => {
+		const exphbs = expressHandlebars.create({ handlebars: Handlebars });
+		expect(exphbs.handlebars).toBe(Handlebars);
 	});
 
 	test("should nomalize extname", () => {

@@ -105,7 +105,7 @@ export default class ExpressHandlebars {
 				throw new Error("A partials dir must be a string or config object");
 			}
 
-			const templates: HandlebarsTemplateDelegate | TemplateSpecification = dirTemplates || await this.getTemplates(dirPath ?? "", options);
+			const templates: HandlebarsTemplateDelegate | TemplateSpecification = dirTemplates || await this.getTemplates(dirPath!, options);
 
 			return {
 				templates: templates as HandlebarsTemplateDelegate | TemplateSpecification,
@@ -227,7 +227,7 @@ export default class ExpressHandlebars {
 					if (err !== null) {
 						reject(err);
 					} else {
-						resolve(value ?? "");
+						resolve(value!);
 					};
 				};
 			});
@@ -370,7 +370,7 @@ export default class ExpressHandlebars {
 		// Optimistically cache file promise to reduce file system I/O, but remove
 		// from cache if there was a problem.
 		try {
-			cache[filePath] = readFile(filePath, { encoding: encoding || "utf8" });
+			cache[filePath] = readFile(filePath, { encoding });
 			return await cache[filePath] as string;
 		} catch (err) {
 			delete cache[filePath];
