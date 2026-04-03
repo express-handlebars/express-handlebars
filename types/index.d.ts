@@ -25,7 +25,7 @@ export interface PrecompiledCache {
 }
 
 export interface FsCache {
-	[index: string]: string|string[]|Promise<string|string[]>;
+	[index: string]: string | string[] | Promise<string | string[]>;
 }
 
 export type RenameFunction = (filePath: string, namespace?: string) => string
@@ -56,7 +56,7 @@ export interface RenderOptions {
 export interface RenderViewOptions extends RenderOptions {
 	[index: string]: unknown;
 	settings?: {
-		views: string|string[]
+		views: string | string[]
 	}
 }
 
@@ -74,9 +74,9 @@ export interface ConfigOptions {
 	extname?: string;
 	encoding?: BufferEncoding;
 	layoutsDir?: string;
-	partialsDir?: string|string[]|PartialsDirObject|PartialsDirObject[];
-	defaultLayout?: string|false;
-	helpers?: UnknownObject;
+	partialsDir?: string | string[] | PartialsDirObject | PartialsDirObject[];
+	defaultLayout?: string | false;
+	helpers?: HelperDelegateObject;
 	compilerOptions?: CompileOptions;
 	runtimeOptions?: Handlebars.RuntimeOptions;
 }
@@ -86,7 +86,7 @@ export interface EngineOptions extends ConfigOptions {
 }
 
 export interface RenderCallback {
-		(err: Error|null, content?: string): void;
+	(err: Error | null, content?: string): void;
 }
 
 export type Engine = (viewPath: string, options: ConfigOptions, callback?: RenderCallback) => Promise<string>
