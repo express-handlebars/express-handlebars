@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "ES2015",
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "sourceMap": true,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "outDir": "./dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "ES2015"
   },
   "include": ["./lib/**/*"]
 }

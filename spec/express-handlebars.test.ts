@@ -4,8 +4,9 @@ import type {
 	TemplateDelegateObject,
 	EngineOptions,
 } from "../types";
+import Handlebars from "handlebars";
 
-function fixturePath (filePath = "") {
+function fixturePath(filePath = "") {
 	return path.resolve(__dirname, "./fixtures", filePath);
 }
 
@@ -13,6 +14,11 @@ describe("express-handlebars", () => {
 	test("ExpressHandlebars instance", () => {
 		const exphbs = new expressHandlebars.ExpressHandlebars();
 		expect(exphbs).toBeDefined();
+	});
+
+	test("should set handlebars", () => {
+		const exphbs = expressHandlebars.create({ handlebars: Handlebars });
+		expect(exphbs.handlebars).toBe(Handlebars);
 	});
 
 	test("should nomalize extname", () => {
@@ -510,7 +516,7 @@ describe("express-handlebars", () => {
 		test("should call callback with html", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, { text: "test text" }, (err: Error|null, html: string|undefined) => {
+			exphbs.renderView(viewPath, { text: "test text" }, (err: Error | null, html: string | undefined) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p>test text</p>");
 				done();
@@ -520,7 +526,7 @@ describe("express-handlebars", () => {
 		test("should call callback as second parameter", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = fixturePath("render-text.handlebars");
-			exphbs.renderView(viewPath, (err: Error|null, html: string|undefined) => {
+			exphbs.renderView(viewPath, (err: Error | null, html: string | undefined) => {
 				expect(err).toBe(null);
 				expect(html).toBe("<p></p>");
 				done();
@@ -530,7 +536,7 @@ describe("express-handlebars", () => {
 		test("should call callback with error", (done) => {
 			const exphbs = expressHandlebars.create({ defaultLayout: undefined });
 			const viewPath = "does-not-exist";
-			exphbs.renderView(viewPath, {}, (err: Error|null, html: string | undefined) => {
+			exphbs.renderView(viewPath, {}, (err: Error | null, html: string | undefined) => {
 				expect(err?.message).toEqual(expect.stringContaining("no such file or directory"));
 				expect(html).toBeUndefined();
 				done();
@@ -640,7 +646,7 @@ describe("express-handlebars", () => {
 			test("should call template with context and options", () => {
 				const exphbs = expressHandlebars.create();
 				// @ts-expect-error empty function
-				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
+				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => { });
 				const template = "template";
 				const options = {};
 				exphbs["_compileTemplate"](template, options);
@@ -650,7 +656,7 @@ describe("express-handlebars", () => {
 			test("should trim template", () => {
 				const exphbs = expressHandlebars.create();
 				// @ts-expect-error empty function
-				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => {});
+				jest.spyOn(exphbs.handlebars, "compile").mockImplementation(() => { });
 				const template = " template\n";
 				const options = {};
 				exphbs["_compileTemplate"](template, options);
@@ -662,7 +668,7 @@ describe("express-handlebars", () => {
 			test("should call template with context and options", () => {
 				const exphbs = expressHandlebars.create();
 				// @ts-expect-error empty function
-				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
+				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => { });
 				const template = "template";
 				const options = {};
 				exphbs["_precompileTemplate"](template, options);
@@ -672,7 +678,7 @@ describe("express-handlebars", () => {
 			test("should trim template", () => {
 				const exphbs = expressHandlebars.create();
 				// @ts-expect-error empty function
-				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => {});
+				jest.spyOn(exphbs.handlebars, "precompile").mockImplementation(() => { });
 				const template = " template\n";
 				const options = {};
 				exphbs["_precompileTemplate"](template, options);
