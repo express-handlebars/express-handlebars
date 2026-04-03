@@ -48,7 +48,7 @@ export interface RenderOptions {
 	data?: UnknownObject;
 	encoding?: BufferEncoding;
 	helpers?: HelperDelegateObject;
-	layout?: string;
+	layout?: string | false;
 	partials?: TemplateDelegateObject;
 	runtimeOptions?: Handlebars.RuntimeOptions;
 }

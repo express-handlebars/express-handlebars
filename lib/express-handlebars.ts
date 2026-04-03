@@ -43,17 +43,17 @@ export default class ExpressHandlebars {
 	compilerOptions?: CompileOptions;
 	runtimeOptions?: RuntimeOptions;
 	helpers?: HelperDelegateObject;
-	defaultLayout: string;
+	defaultLayout?: string | false;
 	handlebars: HandlebarsImport;
 
 	constructor(config: ConfigOptions = {}) {
 		// Config properties with defaults.
-		this.handlebars = config.handlebars || Handlebars;
-		this.extname = config.extname || ".handlebars";
-		this.encoding = config.encoding || "utf8";
+		this.handlebars = config.handlebars ?? Handlebars;
+		this.extname = config.extname ?? ".handlebars";
+		this.encoding = config.encoding ?? "utf8";
 		this.layoutsDir = config.layoutsDir; // Default layouts directory is relative to `express settings.view` + `layouts/`
 		this.partialsDir = config.partialsDir; // Default partials directory is relative to `express settings.view` + `partials/`
-		this.defaultLayout = config.defaultLayout || "main";
+		this.defaultLayout = "defaultLayout" in config ? config.defaultLayout : "main";
 		this.helpers = config.helpers;
 		this.compilerOptions = config.compilerOptions;
 		this.runtimeOptions = config.runtimeOptions;
@@ -415,7 +415,7 @@ export default class ExpressHandlebars {
 		return null;
 	}
 
-	private _resolveLayoutPath(layoutPath?: string): string | null {
+	private _resolveLayoutPath(layoutPath?: string | false): string | null {
 		if (!layoutPath) {
 			return null;
 		}
