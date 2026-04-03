@@ -579,9 +579,7 @@ describe("express-handlebars", () => {
 			const template = fixturePath("templates/template.handlebars");
 			await exphbs.getTemplates(dirPath);
 			expect(exphbs._fsCache[template]).toBeDefined();
-			// eslint-disable-next-line no-unassigned-vars
-			let undef: undefined;
-			exphbs.resetCache(undef);
+			exphbs.resetCache(undefined);
 			expect(exphbs._fsCache).toEqual({});
 		});
 
