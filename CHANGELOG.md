@@ -1,3 +1,15 @@
+# [9.0.0](https://github.com/express-handlebars/express-handlebars/compare/v8.0.7...v9.0.0) (2026-04-03)
+
+
+### Bug Fixes
+
+* update deps ([#1196](https://github.com/express-handlebars/express-handlebars/issues/1196)) ([6c0da20](https://github.com/express-handlebars/express-handlebars/commit/6c0da20be6eea9873cd91dba9540be5a9ff87877))
+
+
+### BREAKING CHANGES
+
+* update typescript to v6 and update some types
+
 ## [8.0.7](https://github.com/express-handlebars/express-handlebars/compare/v8.0.6...v8.0.7) (2026-03-27)
 
 
