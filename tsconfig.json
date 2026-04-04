@@ -4,9 +4,11 @@
     "declaration": true,
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./lib",
     "sourceMap": true,
     "target": "ES2015"
   },
-  "include": ["./lib/**/*"]
+  "include": [
+    "./lib/**/*"
+  ]
 }
