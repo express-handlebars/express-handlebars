@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/express-handlebars/express-handlebars/compare/v9.0.0...v9.0.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* fix rootDir in typescript ([#1199](https://github.com/express-handlebars/express-handlebars/issues/1199)) ([c45984b](https://github.com/express-handlebars/express-handlebars/commit/c45984b004217c652c9ae097dc3bd435597850f8))
+
 # [9.0.0](https://github.com/express-handlebars/express-handlebars/compare/v8.0.7...v9.0.0) (2026-04-03)
 
 
