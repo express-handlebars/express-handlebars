@@ -15,7 +15,7 @@
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com> (http://ericf.me/)",
   "repository": {
     "type": "git",
-    "url": "git://github.com/express-handlebars/express-handlebars.git"
+    "url": "https://github.com/express-handlebars/express-handlebars.git"
   },
   "bugs": {
     "url": "https://github.com/express-handlebars/express-handlebars/issues"
