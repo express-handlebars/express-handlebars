@@ -45,7 +45,7 @@
     "eslint": "^10.7.0",
     "globals": "^17.7.0",
     "jest-cli": "^30.4.2",
-    "semantic-release": "^25.0.7",
+    "semantic-release": "^25.0.8",
     "ts-jest": "^29.4.11",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.64.0"
