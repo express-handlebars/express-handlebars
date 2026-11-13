@@ -1,3 +1,10 @@
+## [9.0.6](https://github.com/express-handlebars/express-handlebars/compare/v9.0.5...v9.0.6) (2026-11-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to ^14.0.6 ([#1319](https://github.com/express-handlebars/express-handlebars/issues/1319)) ([ca7699c](https://github.com/express-handlebars/express-handlebars/commit/ca7699cf45527c5d03ac2b9379f599fdab8341de))
+
 ## [9.0.5](https://github.com/express-handlebars/express-handlebars/compare/v9.0.4...v9.0.5) (2026-11-12)
 
 
